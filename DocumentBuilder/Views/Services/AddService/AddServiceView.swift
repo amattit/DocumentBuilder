@@ -11,90 +11,44 @@ struct AddServiceView: View {
     @ObservedObject var viewModel: AddServiceViewModel
     
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 16) {
-                Text("Добавить Сервис")
-                    .font(.largeTitle)
-                
-                VStack(alignment: .leading, spacing: 8) {
-                    Text("Название")
-                    TextField("Введите имя сервиса, например, \"Запрос на создание задачи\"", text: $viewModel.title)
-                }
+        NavigationStack {
+            ScrollView {
+                VStack(alignment: .leading, spacing: 16) {
+                    Text("Добавить Сервис")
+                        .font(.largeTitle)
                     
-                VStack(alignment: .leading, spacing: 8) {
-                    HStack {
-                        Text("Относительный путь")
-                        Text(viewModel.relativePath + viewModel.queryString)
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("Название")
+                        TextField("Введите имя сервиса, например, \"Запрос на создание задачи\"", text: $viewModel.title)
                     }
-                    TextField("/some/path"+viewModel.queryString, text: $viewModel.relativePath)
-                }
-                
-                if viewModel.queryViewModel == nil {
-                    HStack(alignment: .bottom) {
-                        Text("Добавьте query параметры")
-                            .font(.title)
-                        Button(action: viewModel.createQueryViewModel) {
-                            Image(systemName: "plus")
-                        }
-                    }
-                    Text("если они нужны")
-                        .font(.subheadline)
-                        .foregroundColor(.secondary)
-                }
-                if let queryViewModel = viewModel.queryViewModel {
-                    QueryParametersView(viewModel: queryViewModel)
-                    Button(action: viewModel.removeQueryModel) {
+                    
+                    VStack(alignment: .leading, spacing: 8) {
                         HStack {
-                            Text("Удалить")
-                            Image(systemName: "trash")
+                            Text("Относительный путь")
+                            Text(viewModel.relativePath + viewModel.queryString)
                         }
+                        TextField("/some/path"+viewModel.queryString, text: $viewModel.relativePath)
                     }
-                    .accentColor(.red)
-                }
-                
-                HStack {
-                    Text("HTTP method")
-                    Menu {
-                        ForEach(viewModel.methods) { item in
-                            Button(action: {
-                                viewModel.method = item
-                            }) {
-                                Text(item.rawValue)
+                    
+                    VStack(alignment: .leading, spacing: 6) {
+                        if viewModel.queryViewModel == nil {
+                            HStack(alignment: .bottom) {
+                                Text("Добавьте query параметры")
+                                    .font(.title)
+                                Button(action: viewModel.createQueryViewModel) {
+                                    Image(systemName: "plus")
+                                }
                             }
+                            Text("если они нужны")
+                                .font(.subheadline)
+                                .foregroundColor(.secondary)
                         }
-                    } label: {
-                        Text(viewModel.method.rawValue)
                     }
-                    .menuStyle(.button)
-                    .frame(maxWidth: 300)
-                }
-                
-                // MARK: - Headers
-                VStack(alignment: .leading, spacing: 6) {
-                    HeaderView(viewModel: viewModel.headerViewModel)
-                }
-                
-                // MARK: - Query parameters
-                
-                // MARK: - Request
-                VStack(alignment: .leading, spacing: 6) {
-                    if viewModel.requestModel == nil {
-                        HStack(alignment: .bottom) {
-                            Text("Добавьте или выберите модель запроса")
-                                .font(.title)
-                            Button(action: {
-                                viewModel.createRequestModel()
-                            }) {
-                                Image(systemName: "plus")
-                            }
-                        }
-                        Text("если она нужна")
-                            .font(.subheadline)
-                            .foregroundColor(.secondary)
-                    }
-                    if let requestModel = viewModel.requestModel {
-                        DataModelView(viewModel: requestModel)
-                        Button(action: viewModel.removeRequestModel) {
+                    
+                    // MARK: - Query parameters
+                    if let queryViewModel = viewModel.queryViewModel {
+                        QueryParametersView(viewModel: queryViewModel)
+                        Button(action: viewModel.removeQueryModel) {
                             HStack {
                                 Text("Удалить")
                                 Image(systemName: "trash")
@@ -102,43 +56,127 @@ struct AddServiceView: View {
                         }
                         .accentColor(.red)
                     }
-                }
-                
-                // MARK: - Response
-                VStack(alignment: .leading, spacing: 6) {
-                    if viewModel.responseModel == nil {
-                        HStack(alignment: .bottom) {
-                            Text("Добавьте или выберите модель Ответа")
+                    
+                    HStack {
+                        Text("HTTP method")
+                        Menu {
+                            ForEach(viewModel.methods) { item in
+                                Button(action: {
+                                    viewModel.method = item
+                                }) {
+                                    Text(item.rawValue)
+                                }
+                            }
+                        } label: {
+                            Text(viewModel.method.rawValue)
+                        }
+                        .menuStyle(.button)
+                        .frame(maxWidth: 300)
+                    }
+                    
+                    // MARK: - Headers
+                    VStack(alignment: .leading, spacing: 6) {
+                        HeaderView(viewModel: viewModel.headerViewModel)
+                    }
+                    
+                    // MARK: - Request
+                    VStack(alignment: .leading, spacing: 6) {
+                        if viewModel.requestModel == nil {
+                            HStack(alignment: .bottom) {
+                                Button(action: {
+                                    viewModel.createRequestModel()
+                                }) {
+                                    Text("Добавьте")
+                                }
+                                .buttonStyle(.link)
                                 .font(.title)
-                            Button(action: {
-                                viewModel.createResponseModel()
-                            }) {
-                                Image(systemName: "plus")
+                                
+                                Text("или")
+                                    .font(.title)
+                                
+                                NavigationLink(value: Navigate.selectRqModel) {
+                                    Text("выберите")
+                                }
+                                .buttonStyle(.link)
+                                .font(.title)
+                                
+                                Text("модель запроса")
+                                    .font(.title)
                             }
+                            Text("если она нужна")
+                                .font(.subheadline)
+                                .foregroundColor(.secondary)
                         }
-                        Text("если она нужна")
-                            .font(.subheadline)
-                            .foregroundColor(.secondary)
+                        if let requestModel = viewModel.requestModel {
+                            DataModelView(viewModel: requestModel)
+                            Button(action: viewModel.removeRequestModel) {
+                                HStack {
+                                    Text("Удалить")
+                                    Image(systemName: "trash")
+                                }
+                            }
+                            .accentColor(.red)
+                        }
                     }
-                    if let responseModel = viewModel.responseModel {
-                        DataModelView(viewModel: responseModel)
-                        Button(action: viewModel.removeResponsemodel) {
-                            HStack {
-                                Text("Удалить")
-                                Image(systemName: "trash")
+                    
+                    // MARK: - Response
+                    VStack(alignment: .leading, spacing: 6) {
+                        if viewModel.responseModel == nil {
+                            HStack(alignment: .bottom) {
+                                Button(action: {
+                                    viewModel.createRequestModel()
+                                }) {
+                                    Text("Добавьте")
+                                }
+                                .buttonStyle(.link)
+                                .font(.title)
+                                
+                                Text("или")
+                                    .font(.title)
+                                
+                                NavigationLink(value: Navigate.selectRqModel) {
+                                    Text("выберите")
+                                }
+                                .buttonStyle(.link)
+                                .font(.title)
+                                
+                                Text("модель ответа")
+                                    .font(.title)
                             }
+                            Text("если она нужна")
+                                .font(.subheadline)
+                                .foregroundColor(.secondary)
                         }
-                        .accentColor(.red)
+                        if let responseModel = viewModel.responseModel {
+                            DataModelView(viewModel: responseModel)
+                            Button(action: viewModel.removeResponsemodel) {
+                                HStack {
+                                    Text("Удалить")
+                                    Image(systemName: "trash")
+                                }
+                            }
+                            .accentColor(.red)
+                        }
+                    }
+                    
+                    Button(action: viewModel.save) {
+                        Text("Сохранить")
                     }
                 }
-                
-                Button(action: viewModel.save) {
-                    Text("Сохранить")
+                .padding(16)
+            }
+            .navigationDestination(for: Navigate.self) { item in
+                switch item {
+                case .selectRqModel:
+                    VStack {
+                        Text("Выбрать Модель запроса")
+                        Spacer()
+                    }
+                case .selectRsModel:
+                    Text("Выбрать Модель ответа")
                 }
             }
-            .padding(16)
         }
-        
     }
 }
 
@@ -181,4 +219,11 @@ enum Method: String, CaseIterable, Hashable {
 
 extension Method: Identifiable {
     var id: Int { hashValue }
+}
+
+extension AddServiceView {
+    enum Navigate: Hashable {
+        case selectRqModel
+        case selectRsModel
+    }
 }
