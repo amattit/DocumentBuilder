@@ -13,7 +13,7 @@ struct DocumentBuilderApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView(viewModel: .init())
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
     }
