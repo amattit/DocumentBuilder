@@ -20,7 +20,6 @@ struct FeatureView: View {
                     .font(.title)
                 
                 RichTextEditor(text: $viewModel.attributedString, context: RTFContext.context)
-                    .disabled(true)
                     .frame(minHeight: 300)
             }
             // TODO: Собрать свое меню

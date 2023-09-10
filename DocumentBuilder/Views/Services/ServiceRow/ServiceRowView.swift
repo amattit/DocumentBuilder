@@ -13,9 +13,19 @@ struct ServiceRowView: View {
     var body: some View {
         HStack {
             MethodView(method: method)
-            Text(title)
+            VStack(alignment: .leading) {
+                Text(path)
+                    .font(.body)
+                Text(title)
+                    .font(.footnote)
+                    .foregroundColor(.secondary)
+            }
             Spacer()
         }
+    }
+    
+    var path: String {
+        service.path ?? "N/A"
     }
     
     var title: String {

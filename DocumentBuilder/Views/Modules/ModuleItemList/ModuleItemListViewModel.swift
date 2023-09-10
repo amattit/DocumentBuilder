@@ -11,12 +11,16 @@ import CoreData
 import Combine
 
 final class ModuleItemListViewModel: ObservableObject {
-    @Dependency(\.persistent) var store
+    @Dependency(\.serviceRepository) var serviceRepository
+    @Dependency(\.dataModelRepository) var dataModelRepository
+    @Dependency(\.featureRepository) var featureRepository
     
     @Published var services = [Service]()
     @Published var features = [Feature]()
     @Published var models = [DataModel]()
     @Published var present: Present?
+    
+    @Published var modelSections: [ModelType] = []
     
     let module: Module
     private var disposables = Set<AnyCancellable>()
@@ -27,54 +31,41 @@ final class ModuleItemListViewModel: ObservableObject {
     }
     
     func load() {
-        guard let id = module.id?.uuidString else { return }
-        // TODO: Добавить фильтр deletedAt != nil
-        let parentIdPredicate = NSPredicate(format: "parentId == %@", id)
-        let dateNotNilPredicate = NSPredicate(format: "deletedAt == nil")
-        let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [parentIdPredicate, dateNotNilPredicate])
-        
-        let servicesRequest = Service.fetchRequest()
-        servicesRequest.predicate = predicate
-        servicesRequest.sortDescriptors = [NSSortDescriptor(keyPath: \Service.title, ascending: true)]
-        
-        let featuresRequest = Feature.fetchRequest()
-        featuresRequest.predicate = predicate
-        featuresRequest.sortDescriptors = [NSSortDescriptor(keyPath: \Feature.title, ascending: true)]
-        
-        let dataModelRequest = DataModel.fetchRequest()
-        dataModelRequest.predicate = predicate
-        dataModelRequest.sortDescriptors = [NSSortDescriptor(keyPath: \DataModel.title, ascending: true)]
-        
         do {
-            try store.context.performAndWait {
-                self.services = try store.context.fetch(servicesRequest)
-                self.features = try store.context.fetch(featuresRequest)
-                self.models = try store.context.fetch(dataModelRequest)
-            }
+            self.services = try serviceRepository.getServices(for: module)
+            self.features = try featureRepository.getFeatures(for: module)
+            self.models = try dataModelRepository.getDataModels(for: module)
+            
+            self.modelSections = Array(
+                Set(self.models.map { .init(rawValue: $0.modelType ?? "") ?? .plain })
+            )
         } catch {
             print(error.localizedDescription)
+        }
+    }
+    
+    func getModels(for type: ModelType) -> [DataModel] {
+        models.filter {
+            $0.modelType == type.rawValue
         }
     }
     
     func deleteService(at indexSet: IndexSet) {
         guard let index = indexSet.first else { return }
         let toDelete = services[index]
-        toDelete.deletedAt = Date()
-        store.save()
+        serviceRepository.delete(toDelete)
     }
     
     func deleteFeature(at indexSet: IndexSet) {
         guard let index = indexSet.first else { return }
         let toDelete = features[index]
-        toDelete.deletedAt = Date()
-        store.save()
+        featureRepository.delete(toDelete)
     }
     
     func deleteModel(at indexSet: IndexSet) {
         guard let index = indexSet.first else { return }
         let toDelete = models[index]
-        toDelete.deletedAt = Date()
-        store.save()
+        dataModelRepository.delete(toDelete)
     }
     
     func addService() {
@@ -91,35 +82,6 @@ final class ModuleItemListViewModel: ObservableObject {
     
     func present(_ item: Present) {
         self.present = item
-    }
-    
-    func save() {
-        store.save()
-    }
-    
-    func makeFeatureModel() -> Feature {
-        let feature = Feature(context: store.context)
-        feature.createdAt = Date()
-        feature.id = UUID()
-        feature.parentId = module.id!
-        feature.attributedText = .empty
-        return feature
-    }
-    
-    func makeServiceModel() -> Service {
-        let feature = Service(context: store.context)
-        feature.createdAt = Date()
-        feature.id = UUID()
-        feature.parentId = module.id!
-        return feature
-    }
-    
-    func makeDataModel() -> DataModel {
-        let feature = DataModel(context: store.context)
-        feature.createdAt = Date()
-        feature.id = UUID()
-        feature.parentId = module.id!
-        return feature
     }
     
     private func bind() {

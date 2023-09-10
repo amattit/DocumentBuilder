@@ -7,6 +7,7 @@
 
 import Foundation
 import Dependencies
+import Combine
 ///  Относительный путь
 ///  Название сервиса общее
 ///  описание сервиса
@@ -38,12 +39,17 @@ final class AddServiceViewModel: ObservableObject {
     @Published var method = Method.GET
     let methods = Method.allCases
     /// QueryItems
-    ///
+    @Published var queryViewModel: QueryParametersViewModel?
+    
     /// RequestBody
     @Published var requestModel: DataModelViewModel?
 
     /// Response
     @Published var responseModel: DataModelViewModel?
+    
+    @Published var queryString = ""
+    
+    var disposables = Set<AnyCancellable>()
     
     let module: Module
     
@@ -51,12 +57,29 @@ final class AddServiceViewModel: ObservableObject {
         self.module = module
     }
     
+    func createQueryViewModel() {
+        queryViewModel = .init()
+        if let queryViewModel {
+            queryViewModel.$parameters.sink { attributes in
+                let query = attributes
+                    .filter { $0.isRequired == true }
+                    .map {
+                        "\($0.title)=\($0.type)"
+                    }
+                    .joined(separator: "&")
+                
+                self.queryString = query.isEmpty ? "" : "?\(query)"
+            }
+            .store(in: &disposables)
+        }
+    }
+    
     func createRequestModel() {
-        requestModel = DataModelViewModel()
+        requestModel = DataModelViewModel(type: .network)
     }
     
     func createResponseModel() {
-        responseModel = DataModelViewModel()
+        responseModel = DataModelViewModel(type: .network)
     }
     
     func save() {
@@ -77,6 +100,19 @@ final class AddServiceViewModel: ObservableObject {
             header.value = $0.value
         }
         
+        if let queryViewModel {
+            let _ = queryViewModel.parameters.map {
+                let attribute = QueryAttributes(context: store.context)
+                attribute.id = $0.id
+                attribute.parentId = service.id
+                attribute.title = $0.title
+                attribute.createdAt = Date()
+                attribute.comment = $0.comment
+                attribute.isRequired = $0.isRequired
+                attribute.objectType = $0.type
+            }
+        }
+        
         if let requestModel {
             let dataModel = DataModel(context: store.context)
             dataModel.id = requestModel.model.id
@@ -84,7 +120,8 @@ final class AddServiceViewModel: ObservableObject {
             dataModel.subtitle = requestModel.model.subtitle
             dataModel.createdAt = Date()
             dataModel.parentId = service.id
-            dataModel.modelType = requestModel.model.type.rawValue
+            dataModel.modelType = requestModel.modelType.rawValue
+            dataModel.moduleId = module.id
             
             
             let _ = requestModel.attributes.map {
@@ -101,19 +138,20 @@ final class AddServiceViewModel: ObservableObject {
         }
         
         if let responseModel {
-            let dataModel = DataModel(context: store.context)
-            dataModel.id = responseModel.model.id
-            dataModel.title = responseModel.model.title
-            dataModel.subtitle = responseModel.model.subtitle
-            dataModel.createdAt = Date()
-            dataModel.parentId = service.id
-            dataModel.modelType = responseModel.model.type.rawValue
+            let dataResponseModel = DataModel(context: store.context)
+            dataResponseModel.id = responseModel.model.id
+            dataResponseModel.title = responseModel.model.title
+            dataResponseModel.subtitle = responseModel.model.subtitle
+            dataResponseModel.createdAt = Date()
+            dataResponseModel.parentId = service.id
+            dataResponseModel.modelType = responseModel.modelType.rawValue
+            dataResponseModel.moduleId = module.id
             
             
             let _ = responseModel.attributes.map {
                 let attribute = DataModelAttributes(context: store.context)
                 attribute.id = $0.id
-                attribute.parentId = dataModel.id
+                attribute.parentId = dataResponseModel.id
                 attribute.title = $0.title
                 attribute.createdAt = Date()
                 attribute.comment = $0.comment
@@ -132,5 +170,9 @@ final class AddServiceViewModel: ObservableObject {
     
     func removeResponsemodel() {
         responseModel = nil
+    }
+    
+    func removeQueryModel() {
+        queryViewModel = nil
     }
 }

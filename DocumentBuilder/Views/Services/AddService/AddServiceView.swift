@@ -22,9 +22,36 @@ struct AddServiceView: View {
                 }
                     
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("Относительный путь")
-                    TextField("/some/path", text: $viewModel.relativePath)
+                    HStack {
+                        Text("Относительный путь")
+                        Text(viewModel.relativePath + viewModel.queryString)
+                    }
+                    TextField("/some/path"+viewModel.queryString, text: $viewModel.relativePath)
                 }
+                
+                if viewModel.queryViewModel == nil {
+                    HStack(alignment: .bottom) {
+                        Text("Добавьте query параметры")
+                            .font(.title)
+                        Button(action: viewModel.createQueryViewModel) {
+                            Image(systemName: "plus")
+                        }
+                    }
+                    Text("если они нужны")
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
+                }
+                if let queryViewModel = viewModel.queryViewModel {
+                    QueryParametersView(viewModel: queryViewModel)
+                    Button(action: viewModel.removeQueryModel) {
+                        HStack {
+                            Text("Удалить")
+                            Image(systemName: "trash")
+                        }
+                    }
+                    .accentColor(.red)
+                }
+                
                 HStack {
                     Text("HTTP method")
                     Menu {
@@ -46,6 +73,8 @@ struct AddServiceView: View {
                 VStack(alignment: .leading, spacing: 6) {
                     HeaderView(viewModel: viewModel.headerViewModel)
                 }
+                
+                // MARK: - Query parameters
                 
                 // MARK: - Request
                 VStack(alignment: .leading, spacing: 6) {

@@ -43,19 +43,23 @@ struct ModuleItemListView: View {
                 }
             
             // MARK: - Блок Моделей данных
-            ModelItemsSection(
-                items: viewModel.models,
-                onDeleteAction: viewModel.deleteModel) { item in
-                    Text(item.title ?? "undefind")
-                } addActionView: {
-                    HStack {
-                        Button(action: viewModel.addDataModel) {
-                            Image(systemName: "plus")
+            Text("Модели данных")
+                .font(.largeTitle)
+            ForEach(viewModel.modelSections) { section in
+                ModelItemsSection(
+                    items: viewModel.getModels(for: section),
+                    onDeleteAction: viewModel.deleteModel) { item in
+                        ModelRowView(model: item)
+                    } addActionView: {
+                        HStack {
+                            Button(action: viewModel.addDataModel) {
+                                Image(systemName: "plus")
+                            }
+                            Text(section.rawValue)
+                                .font(.title)
                         }
-                        Text("Модели данных")
-                            .font(.largeTitle)
                     }
-                }
+            }
         }
         .navigationDestination(for: Feature.self, destination: { feature in
             FeatureView(viewModel: .init(feature: feature))
@@ -66,14 +70,14 @@ struct ModuleItemListView: View {
                 VStack {
                     Text("Добавить \(item.title)")
                 }
-                .frame(minWidth: 300, minHeight: 400)
+                .frame(minWidth: 900, minHeight: 700)
             case .addFeature:
                 AddFeatureView(viewModel: .init(moduleId: viewModel.module.id, onSave: {
                     viewModel.present = nil
                 }))
             case .addService:
                 AddServiceView(viewModel: .init(module: viewModel.module))
-                .frame(minWidth: 600, minHeight: 700)
+                .frame(minWidth: 900, minHeight: 700)
             }
         })
         .toolbar {

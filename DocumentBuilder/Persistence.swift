@@ -51,6 +51,7 @@ struct PersistenceController {
 enum PersistentKey: DependencyKey {
     static var liveValue: PersistentProtocol = Persistent()
     static var previewValue: PersistentProtocol = Persistent(inMemory: true)
+    static var testValue: PersistentProtocol = Persistent(inMemory: true)
 }
 
 extension DependencyValues {

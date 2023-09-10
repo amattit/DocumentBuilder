@@ -38,6 +38,12 @@
 		7E7380AE2AADB02F00A12429 /* AddServiceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7380AD2AADB02F00A12429 /* AddServiceViewModel.swift */; };
 		7E7380B12AADB32700A12429 /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7380B02AADB32700A12429 /* HeaderView.swift */; };
 		7E7380B42AADB9D700A12429 /* ServiceRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7380B32AADB9D700A12429 /* ServiceRowView.swift */; };
+		7E7380B62AADD06F00A12429 /* ModelRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7380B52AADD06F00A12429 /* ModelRowView.swift */; };
+		7E7380B92AADF3A400A12429 /* QueryParametersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7380B82AADF3A400A12429 /* QueryParametersView.swift */; };
+		7E7380BC2AAE270400A12429 /* ServiceRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7380BB2AAE270400A12429 /* ServiceRepository.swift */; };
+		7E7380BE2AAE2A5400A12429 /* ServiceRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7380BD2AAE2A5400A12429 /* ServiceRepositoryTests.swift */; };
+		7E7380C02AAE378200A12429 /* FeatureRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7380BF2AAE378200A12429 /* FeatureRepository.swift */; };
+		7E7380C22AAE388100A12429 /* DataModelRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7380C12AAE388100A12429 /* DataModelRepository.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -91,6 +97,12 @@
 		7E7380AD2AADB02F00A12429 /* AddServiceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddServiceViewModel.swift; sourceTree = "<group>"; };
 		7E7380B02AADB32700A12429 /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
 		7E7380B32AADB9D700A12429 /* ServiceRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceRowView.swift; sourceTree = "<group>"; };
+		7E7380B52AADD06F00A12429 /* ModelRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelRowView.swift; sourceTree = "<group>"; };
+		7E7380B82AADF3A400A12429 /* QueryParametersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueryParametersView.swift; sourceTree = "<group>"; };
+		7E7380BB2AAE270400A12429 /* ServiceRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceRepository.swift; sourceTree = "<group>"; };
+		7E7380BD2AAE2A5400A12429 /* ServiceRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceRepositoryTests.swift; sourceTree = "<group>"; };
+		7E7380BF2AAE378200A12429 /* FeatureRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureRepository.swift; sourceTree = "<group>"; };
+		7E7380C12AAE388100A12429 /* DataModelRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModelRepository.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -143,6 +155,7 @@
 		7E130C432AA5059200C5E5F6 /* DocumentBuilder */ = {
 			isa = PBXGroup;
 			children = (
+				7E7380BA2AAE26D000A12429 /* Repositories */,
 				7E130C7E2AA66F7000C5E5F6 /* Views */,
 				7E130C7B2AA66C8E00C5E5F6 /* Extensions */,
 				7E130C752AA5063200C5E5F6 /* App */,
@@ -169,6 +182,7 @@
 			isa = PBXGroup;
 			children = (
 				7E130C5B2AA5059900C5E5F6 /* DocumentBuilderTests.swift */,
+				7E7380BD2AAE2A5400A12429 /* ServiceRepositoryTests.swift */,
 			);
 			path = DocumentBuilderTests;
 			sourceTree = "<group>";
@@ -286,6 +300,7 @@
 		7E130CA22AABB80700C5E5F6 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				7E7380B72AADF38A00A12429 /* Query */,
 				7E7380B22AADB9C400A12429 /* ServiceRow */,
 				7E7380AF2AADB30A00A12429 /* Headers */,
 				7E130CA32AABB81100C5E5F6 /* AddService */,
@@ -307,6 +322,7 @@
 			children = (
 				7E7380AA2AACFB1600A12429 /* Models */,
 				7E130CA72AAC7B2F00C5E5F6 /* DataModelView.swift */,
+				7E7380B52AADD06F00A12429 /* ModelRowView.swift */,
 			);
 			path = DataModel;
 			sourceTree = "<group>";
@@ -333,6 +349,24 @@
 				7E7380B32AADB9D700A12429 /* ServiceRowView.swift */,
 			);
 			path = ServiceRow;
+			sourceTree = "<group>";
+		};
+		7E7380B72AADF38A00A12429 /* Query */ = {
+			isa = PBXGroup;
+			children = (
+				7E7380B82AADF3A400A12429 /* QueryParametersView.swift */,
+			);
+			path = Query;
+			sourceTree = "<group>";
+		};
+		7E7380BA2AAE26D000A12429 /* Repositories */ = {
+			isa = PBXGroup;
+			children = (
+				7E7380BB2AAE270400A12429 /* ServiceRepository.swift */,
+				7E7380BF2AAE378200A12429 /* FeatureRepository.swift */,
+				7E7380C12AAE388100A12429 /* DataModelRepository.swift */,
+			);
+			path = Repositories;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -479,12 +513,17 @@
 				7E130C8B2AA67F5600C5E5F6 /* ModuleItemListView.swift in Sources */,
 				7E130C812AA66FA900C5E5F6 /* ModuleListView.swift in Sources */,
 				7E130C472AA5059200C5E5F6 /* ContentView.swift in Sources */,
+				7E7380B62AADD06F00A12429 /* ModelRowView.swift in Sources */,
 				7E7380AE2AADB02F00A12429 /* AddServiceViewModel.swift in Sources */,
 				7E130C7D2AA66CC000C5E5F6 /* ManagedObject+FetchRequest.swift in Sources */,
+				7E7380C22AAE388100A12429 /* DataModelRepository.swift in Sources */,
 				7E130C922AA7670A00C5E5F6 /* AddFeatureView.swift in Sources */,
+				7E7380C02AAE378200A12429 /* FeatureRepository.swift in Sources */,
+				7E7380BC2AAE270400A12429 /* ServiceRepository.swift in Sources */,
 				7E130C8D2AA67F6F00C5E5F6 /* ModuleItemListViewModel.swift in Sources */,
 				7E130C942AA7673A00C5E5F6 /* AddFeatureViewModel.swift in Sources */,
 				7E7380B42AADB9D700A12429 /* ServiceRowView.swift in Sources */,
+				7E7380B92AADF3A400A12429 /* QueryParametersView.swift in Sources */,
 				7E130C882AA6792300C5E5F6 /* AddModuleView.swift in Sources */,
 				7E130C512AA5059800C5E5F6 /* DocumentBuilder.xcdatamodeld in Sources */,
 				7E130C772AA5074F00C5E5F6 /* AppView.swift in Sources */,
@@ -505,6 +544,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7E130C5C2AA5059900C5E5F6 /* DocumentBuilderTests.swift in Sources */,
+				7E7380BE2AAE2A5400A12429 /* ServiceRepositoryTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

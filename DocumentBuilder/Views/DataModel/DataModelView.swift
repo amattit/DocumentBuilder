@@ -79,43 +79,7 @@ struct DataModelView: View {
 
 struct DataModelView_Previews: PreviewProvider {
     static var previews: some View {
-        DataModelView(viewModel: .init())
-    }
-}
-
-class CreateNetworkDataModelViewModel: DataModelViewModel {
-    let service: Service
-    
-    init(service: Service) {
-        self.service = service
-        super.init()
-        model = .init(id: UUID(), title: "", subtitle: "", type: .network)
-    }
-    
-    override func save() {
-        
-        let dataModel = DataModel(context: store.context)
-            dataModel.id = model.id
-            dataModel.title = model.title
-            dataModel.subtitle = model.subtitle
-            dataModel.createdAt = Date()
-            dataModel.parentId = service.id
-            dataModel.modelType = model.type.rawValue
-        
-        
-        let _ = self.attributes.map {
-            let attribute = DataModelAttributes(context: store.context)
-            attribute.id = $0.id
-            attribute.parentId = dataModel.id
-            attribute.title = $0.title
-            attribute.createdAt = Date()
-            attribute.comment = $0.comment
-            attribute.isRequired = $0.isRequired
-            attribute.objectType = $0.type
-            return attribute
-        }
-        
-        store.save()
+        DataModelView(viewModel: .init(type: .plain))
     }
 }
 
@@ -123,13 +87,16 @@ class CreateNetworkDataModelViewModel: DataModelViewModel {
 class DataModelViewModel: ObservableObject {
     @Dependency(\.persistent) var store
     
-    @Published var model: Model = .empty
+    @Published var model: Model = .init(id: UUID(), title: "", subtitle: "")
     @Published var attributes: [ModelAttribute] = []
     @Published var selectedAttributes = Set<ModelAttribute.ID>()
     @Published var popover: String?
+    let modelType: ModelType
     
     /// init для превью
-    init() {}
+    init(type: ModelType) {
+        self.modelType = type
+    }
     
     func addAttribute() {
         attributes.append(.init(id: .init(), title: "", type: "", isRequired: false, comment: "", parentId: model.id))
@@ -142,8 +109,6 @@ class DataModelViewModel: ObservableObject {
     func setPopover(model: ModelAttribute) {
         popover = model.comment
     }
-    
-    func save() {}
 }
 
 extension String: Identifiable {

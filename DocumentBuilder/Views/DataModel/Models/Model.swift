@@ -11,9 +11,8 @@ struct Model: Identifiable, Hashable {
     var id: UUID
     var title: String
     var subtitle: String
-    var type: ModelType
     
-    static var empty = Model(id: .init(), title: "", subtitle: "", type: .unknown)
+    static var empty = Model(id: .init(), title: "", subtitle: "")
 }
 
 struct ModelAttribute: Identifiable, Hashable {
@@ -25,6 +24,7 @@ struct ModelAttribute: Identifiable, Hashable {
     var parentId: UUID
 }
 
-enum ModelType: String, Hashable {
+enum ModelType: String, Identifiable, Hashable {
     case plain, network, view, unknown, db
+    var id: Int { hashValue }
 }
