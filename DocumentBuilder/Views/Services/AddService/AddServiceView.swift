@@ -81,7 +81,7 @@ struct AddServiceView: View {
                     
                     // MARK: - Request
                     VStack(alignment: .leading, spacing: 6) {
-                        if viewModel.requestModel == nil {
+                        if viewModel.requestModel == nil && viewModel.requestModelListViewModel.selected == nil {
                             HStack(alignment: .bottom) {
                                 Button(action: {
                                     viewModel.createRequestModel()
@@ -117,11 +117,27 @@ struct AddServiceView: View {
                             }
                             .accentColor(.red)
                         }
+                        
+                        if let requestModel = viewModel.requestModelListViewModel.selected {
+                            Text("Модель запроса")
+                                .font(.largeTitle)
+                            HStack {
+                                ModelRowView(model: requestModel)
+                                    .font(.title)
+                                Spacer()
+                                Button {
+                                    viewModel.requestModelListViewModel.selected = nil
+                                } label: {
+                                    Image(systemName: "x.circle.fill")
+                                }
+
+                            }
+                        }
                     }
                     
                     // MARK: - Response
                     VStack(alignment: .leading, spacing: 6) {
-                        if viewModel.responseModel == nil {
+                        if viewModel.responseModel == nil && viewModel.responseModelListViewModel.selected == nil {
                             HStack(alignment: .bottom) {
                                 Button(action: {
                                     viewModel.createRequestModel()
@@ -134,7 +150,7 @@ struct AddServiceView: View {
                                 Text("или")
                                     .font(.title)
                                 
-                                NavigationLink(value: Navigate.selectRqModel) {
+                                NavigationLink(value: Navigate.selectRsModel) {
                                     Text("выберите")
                                 }
                                 .buttonStyle(.link)
@@ -157,6 +173,22 @@ struct AddServiceView: View {
                             }
                             .accentColor(.red)
                         }
+                        
+                        if let responseModel = viewModel.responseModelListViewModel.selected {
+                            Text("Модель ответа")
+                                .font(.largeTitle)
+                            HStack {
+                                ModelRowView(model: responseModel)
+                                    .font(.title)
+                                Spacer()
+                                Button {
+                                    viewModel.responseModelListViewModel.selected = nil
+                                } label: {
+                                    Image(systemName: "x.circle.fill")
+                                }
+
+                            }
+                        }
                     }
                     
                     Button(action: viewModel.save) {
@@ -170,10 +202,15 @@ struct AddServiceView: View {
                 case .selectRqModel:
                     VStack {
                         Text("Выбрать Модель запроса")
-                        Spacer()
+                            .font(.largeTitle)
+                        DataModelListView(viewModel: viewModel.requestModelListViewModel)
                     }
                 case .selectRsModel:
-                    Text("Выбрать Модель ответа")
+                    VStack {
+                        Text("Выбрать Модель ответа")
+                            .font(.largeTitle)
+                        DataModelListView(viewModel: viewModel.responseModelListViewModel)
+                    }
                 }
             }
         }

@@ -23,6 +23,7 @@ import Combine
 
 final class AddServiceViewModel: ObservableObject {
     @Dependency(\.persistent) var store
+    @Dependency(\.serviceDataModelRepository) var serviceDataModelRepository
     /// Общее название сервиса
     @Published var title = ""
     
@@ -52,9 +53,16 @@ final class AddServiceViewModel: ObservableObject {
     var disposables = Set<AnyCancellable>()
     
     let module: Module
+    let requestModelListViewModel: DataModelListViewModel
+    let responseModelListViewModel: DataModelListViewModel
     
     init(module: Module) {
         self.module = module
+        
+        requestModelListViewModel = .init(module: module)
+        responseModelListViewModel = .init(module: module)
+        
+        bind()
     }
     
     func createQueryViewModel() {
@@ -83,6 +91,43 @@ final class AddServiceViewModel: ObservableObject {
     }
     
     func save() {
+        let service = addService()
+        
+        addHeader(to: service)
+        
+        addQuery(to: service)
+        
+        addRequestModel(to: service)
+        
+        addResponseModel(to: service)
+        
+        store.save()
+    }
+    
+    func removeRequestModel() {
+        requestModel = nil
+    }
+    
+    func removeResponsemodel() {
+        responseModel = nil
+    }
+    
+    func removeQueryModel() {
+        queryViewModel = nil
+    }
+    
+    private func bind() {
+        requestModelListViewModel.$selected.sink { _ in
+            self.objectWillChange.send()
+        }
+        .store(in: &disposables)
+        responseModelListViewModel.$selected.sink { _ in
+            self.objectWillChange.send()
+        }
+        .store(in: &disposables)
+    }
+    
+    private func addService() -> Service {
         let service = Service(context: store.context)
         service.id = UUID()
         service.parentId = module.id
@@ -90,7 +135,10 @@ final class AddServiceViewModel: ObservableObject {
         service.path = relativePath
         service.method = method.rawValue
         service.createdAt = Date()
-        
+        return service
+    }
+    
+    private func addHeader(to service: Service) {
         headerViewModel.headers.forEach {
             let header = Header(context: store.context)
             header.id = $0.id
@@ -99,7 +147,9 @@ final class AddServiceViewModel: ObservableObject {
             header.subtitle = $0.subtitle
             header.value = $0.value
         }
-        
+    }
+    
+    private func addQuery(to service: Service) {
         if let queryViewModel {
             let _ = queryViewModel.parameters.map {
                 let attribute = QueryAttributes(context: store.context)
@@ -112,14 +162,17 @@ final class AddServiceViewModel: ObservableObject {
                 attribute.objectType = $0.type
             }
         }
-        
-        if let requestModel {
+    }
+    
+    private func addRequestModel(to service: Service) {
+        if let requestModel = requestModelListViewModel.selected {
+            serviceDataModelRepository.add(requestModel, to: service, type: .request)
+        } else if let requestModel {
             let dataModel = DataModel(context: store.context)
             dataModel.id = requestModel.model.id
             dataModel.title = requestModel.model.title
             dataModel.subtitle = requestModel.model.subtitle
             dataModel.createdAt = Date()
-            dataModel.parentId = service.id
             dataModel.modelType = requestModel.modelType.rawValue
             dataModel.moduleId = module.id
             
@@ -135,15 +188,20 @@ final class AddServiceViewModel: ObservableObject {
                 attribute.objectType = $0.type
                 return attribute
             }
+            
+            serviceDataModelRepository.add(dataModel, to: service, type: .request)
         }
-        
-        if let responseModel {
+    }
+    
+    private func addResponseModel(to service: Service) {
+        if let responseModel = responseModelListViewModel.selected {
+            serviceDataModelRepository.add(responseModel, to: service, type: .response)
+        } else if let responseModel {
             let dataResponseModel = DataModel(context: store.context)
             dataResponseModel.id = responseModel.model.id
             dataResponseModel.title = responseModel.model.title
             dataResponseModel.subtitle = responseModel.model.subtitle
             dataResponseModel.createdAt = Date()
-            dataResponseModel.parentId = service.id
             dataResponseModel.modelType = responseModel.modelType.rawValue
             dataResponseModel.moduleId = module.id
             
@@ -159,20 +217,8 @@ final class AddServiceViewModel: ObservableObject {
                 attribute.objectType = $0.type
                 return attribute
             }
+            
+            serviceDataModelRepository.add(dataResponseModel, to: service, type: .response)
         }
-        
-        store.save()
-    }
-    
-    func removeRequestModel() {
-        requestModel = nil
-    }
-    
-    func removeResponsemodel() {
-        responseModel = nil
-    }
-    
-    func removeQueryModel() {
-        queryViewModel = nil
     }
 }

@@ -44,6 +44,8 @@
 		7E7380BE2AAE2A5400A12429 /* ServiceRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7380BD2AAE2A5400A12429 /* ServiceRepositoryTests.swift */; };
 		7E7380C02AAE378200A12429 /* FeatureRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7380BF2AAE378200A12429 /* FeatureRepository.swift */; };
 		7E7380C22AAE388100A12429 /* DataModelRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7380C12AAE388100A12429 /* DataModelRepository.swift */; };
+		7E7380C42AAF8CEC00A12429 /* ServiceDataModelRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7380C32AAF8CEC00A12429 /* ServiceDataModelRepository.swift */; };
+		7E7380C62AAF944B00A12429 /* DataModelListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7380C52AAF944B00A12429 /* DataModelListView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -103,6 +105,8 @@
 		7E7380BD2AAE2A5400A12429 /* ServiceRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceRepositoryTests.swift; sourceTree = "<group>"; };
 		7E7380BF2AAE378200A12429 /* FeatureRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureRepository.swift; sourceTree = "<group>"; };
 		7E7380C12AAE388100A12429 /* DataModelRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModelRepository.swift; sourceTree = "<group>"; };
+		7E7380C32AAF8CEC00A12429 /* ServiceDataModelRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceDataModelRepository.swift; sourceTree = "<group>"; };
+		7E7380C52AAF944B00A12429 /* DataModelListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModelListView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -323,6 +327,7 @@
 				7E7380AA2AACFB1600A12429 /* Models */,
 				7E130CA72AAC7B2F00C5E5F6 /* DataModelView.swift */,
 				7E7380B52AADD06F00A12429 /* ModelRowView.swift */,
+				7E7380C52AAF944B00A12429 /* DataModelListView.swift */,
 			);
 			path = DataModel;
 			sourceTree = "<group>";
@@ -365,6 +370,7 @@
 				7E7380BB2AAE270400A12429 /* ServiceRepository.swift */,
 				7E7380BF2AAE378200A12429 /* FeatureRepository.swift */,
 				7E7380C12AAE388100A12429 /* DataModelRepository.swift */,
+				7E7380C32AAF8CEC00A12429 /* ServiceDataModelRepository.swift */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -511,6 +517,7 @@
 				7E130C962AA772CA00C5E5F6 /* Dictionary+Ext.swift in Sources */,
 				7E130C4E2AA5059800C5E5F6 /* Persistence.swift in Sources */,
 				7E130C8B2AA67F5600C5E5F6 /* ModuleItemListView.swift in Sources */,
+				7E7380C62AAF944B00A12429 /* DataModelListView.swift in Sources */,
 				7E130C812AA66FA900C5E5F6 /* ModuleListView.swift in Sources */,
 				7E130C472AA5059200C5E5F6 /* ContentView.swift in Sources */,
 				7E7380B62AADD06F00A12429 /* ModelRowView.swift in Sources */,
@@ -529,6 +536,7 @@
 				7E130C772AA5074F00C5E5F6 /* AppView.swift in Sources */,
 				7E130C992AA7AD2500C5E5F6 /* ModuleView.swift in Sources */,
 				7E130C9B2AA7AD3000C5E5F6 /* ModuleViewModel.swift in Sources */,
+				7E7380C42AAF8CEC00A12429 /* ServiceDataModelRepository.swift in Sources */,
 				7E130C832AA674E000C5E5F6 /* String+Ext.swift in Sources */,
 				7E130CA12AAB5C3300C5E5F6 /* FeatureView.swift in Sources */,
 				7E130CA82AAC7B2F00C5E5F6 /* DataModelView.swift in Sources */,
@@ -692,6 +700,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = DocumentBuilder/DocumentBuilder.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -719,6 +728,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = DocumentBuilder/DocumentBuilder.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
