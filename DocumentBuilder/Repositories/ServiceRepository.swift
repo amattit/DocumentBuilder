@@ -11,6 +11,9 @@ import Dependencies
 protocol ServiceRepositoryProtocol {
     func getServices(for module: Module) throws -> [Service]
     func delete(_ service: Service)
+    
+    func getHeaders(for service: Service) throws -> [Header]
+    func getQuery(for service: Service) throws -> [QueryAttributes]
 }
 
 class ServiceRepository: ServiceRepositoryProtocol {
@@ -28,6 +31,24 @@ class ServiceRepository: ServiceRepositoryProtocol {
     func delete(_ service: Service) {
         service.deletedAt = Date()
         store.save()
+    }
+    
+    // MARK: Headers
+    func getHeaders(for service: Service) throws -> [Header] {
+        guard let serviceId = service.id?.uuidString else { throw ServiceRepositoryError.noServiceId }
+        let request = Header.fetchRequest()
+        request.predicate = NSPredicate(format: "parentId = %@", serviceId)
+        request.sortDescriptors = [NSSortDescriptor(keyPath: \Header.title, ascending: true)]
+        return try store.context.fetch(request)
+    }
+    
+    // MARK: Query
+    func getQuery(for service: Service) throws -> [QueryAttributes] {
+        guard let serviceId = service.id?.uuidString else { throw ServiceRepositoryError.noServiceId }
+        let request = QueryAttributes.fetchRequest()
+        request.predicate = NSPredicate(format: "parentId = %@", serviceId)
+        request.sortDescriptors = [NSSortDescriptor(keyPath: \QueryAttributes.title, ascending: true)]
+        return try store.context.fetch(request)
     }
     
     func getPredicate(for module: Module) throws -> NSPredicate {
@@ -49,6 +70,7 @@ class ServiceRepository: ServiceRepositoryProtocol {
 enum ServiceRepositoryError: Error {
     case noModuleId
     case cantCreatePredicate
+    case noServiceId
 }
 
 enum ServiceRepositoryKey: DependencyKey {

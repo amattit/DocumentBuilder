@@ -98,6 +98,28 @@ class DataModelViewModel: ObservableObject {
         self.modelType = type
     }
     
+    init(dataMode: DataModel, attributes: [DataModelAttributes]) {
+        self.model = .init(
+            id: dataMode.id ?? UUID(),
+            title: dataMode.title ?? "",
+            subtitle: dataMode.subtitle ?? ""
+        )
+        
+        self.attributes = attributes.compactMap { item -> ModelAttribute? in
+            guard let id = item.id, let parentId = item.parentId else { return nil }
+            return .init(
+                id: id,
+                title: item.title ?? "",
+                type: item.objectType ?? "",
+                isRequired: item.isRequired,
+                comment: item.comment ?? "",
+                parentId: parentId
+            )
+        }
+        
+        modelType = .network
+    }
+    
     func addAttribute() {
         attributes.append(.init(id: .init(), title: "", type: "", isRequired: false, comment: "", parentId: model.id))
     }

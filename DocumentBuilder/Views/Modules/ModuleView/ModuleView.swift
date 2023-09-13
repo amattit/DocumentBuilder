@@ -31,12 +31,6 @@ struct ModuleView: View {
                 }
                 
                 VStack(alignment: .leading, spacing: 8) {
-                    ForEach(viewModel.services) { service in
-                        ServiceView(service: service)
-                    }
-                }
-                
-                VStack(alignment: .leading, spacing: 8) {
                     ForEach(viewModel.models) { model in
                         Text("")
 //                        DataModelView(model: model)
@@ -72,14 +66,14 @@ struct ModuleView_Previews: PreviewProvider {
         (1..<5).forEach { i in
             let feature = Feature(context: persistent.context)
             feature.id = UUID()
-            feature.parentId = module.id!
+            feature.parentId = module.id
             feature.title = "Feature \(i)"
             feature.featureDescription = text
             feature.createdAt = Date()
             
             let service = Service(context: persistent.context)
             service.id = UUID()
-            service.parentId = module.id!
+            service.parentId = module.id
             service.title = "Service \(i)"
             service.createdAt = Date()
             
@@ -98,26 +92,6 @@ struct ModuleView_Previews: PreviewProvider {
         }
 
         return ModuleView(viewModel: viewModel)
-    }
-}
-
-
-
-struct ServiceView: View {
-    let service: Service
-    
-    var body: some View {
-        VStack(alignment: .leading) {
-            HStack {
-                Text(title)
-                    .font(.title)
-                Spacer()
-            }
-        }
-    }
-    
-    var title: String {
-        service.title ?? ""
     }
 }
 

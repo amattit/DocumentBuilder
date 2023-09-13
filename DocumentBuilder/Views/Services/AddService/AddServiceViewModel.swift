@@ -173,7 +173,7 @@ final class AddServiceViewModel: ObservableObject {
             dataModel.title = requestModel.model.title
             dataModel.subtitle = requestModel.model.subtitle
             dataModel.createdAt = Date()
-            dataModel.modelType = requestModel.modelType.rawValue
+//            dataModel.modelType = requestModel.modelType.rawValue
             dataModel.moduleId = module.id
             
             
@@ -202,7 +202,7 @@ final class AddServiceViewModel: ObservableObject {
             dataResponseModel.title = responseModel.model.title
             dataResponseModel.subtitle = responseModel.model.subtitle
             dataResponseModel.createdAt = Date()
-            dataResponseModel.modelType = responseModel.modelType.rawValue
+//            dataResponseModel.modelType = responseModel.modelType.rawValue
             dataResponseModel.moduleId = module.id
             
             

@@ -54,13 +54,20 @@ struct HeaderView: View {
 }
 
 final class HeaderViewModel: ObservableObject {
-    @Published var headers: [HeaderModel] = [
-        .init(id: UUID(), title: "Accept", value: "*/*", subtitle: ""),
-        .init(id: UUID(), title: "Authorization", value: "Bearer <token>", subtitle: "Для аутентификации нужен токен"),
-        .init(id: UUID(), title: "Content-Type", value: "application/json", subtitle: ""),
-    ]
+    @Published var headers: [HeaderModel] = []
     
     @Published var selectedHeader = Set<HeaderModel.ID>()
+    
+    init() {
+        headers = [.init(id: UUID(), title: "Content-Type", value: "application/json", subtitle: "")]
+    }
+    
+    init(headers: [Header]) {
+        self.headers = headers.compactMap { item -> HeaderModel? in
+            guard let id = item.id else { return nil }
+            return .init(id: id, title: item.title ?? "", value: item.value ?? "", subtitle: item.subtitle ?? "")
+        }
+    }
 }
 
 // TODO: Перенести в CoreData, добавить parentId = service.id

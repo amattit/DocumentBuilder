@@ -61,6 +61,24 @@ class QueryParametersViewModel: ObservableObject {
     @Published var parameters: [ModelAttribute] = []
     @Published var selected = Set<ModelAttribute.ID>()
     
+    init() {
+        
+    }
+    
+    init(query: [QueryAttributes]) {
+        parameters = query.compactMap { item -> ModelAttribute? in
+            guard let id = item.id, let parentId = item.parentId else { return nil }
+            return .init(
+                id: id,
+                title: item.title ?? "",
+                type: item.objectType ?? "",
+                isRequired: item.isRequired,
+                comment: item.comment ?? "",
+                parentId: parentId
+            )
+        }
+    }
+    
     func add() {
         parameters.append(.init(id: .init(), title: .init(), type: .init(), isRequired: false, comment: .init(), parentId: .init()))
     }

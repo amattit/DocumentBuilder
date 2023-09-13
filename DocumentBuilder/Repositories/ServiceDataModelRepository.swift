@@ -11,6 +11,7 @@ import Dependencies
 protocol ServiceDataModelRepositoryProtocol {
     func add(_ dataModel: DataModel, to service: Service, type: ServiceDataModelRepository.RelationType)
     func remove(_ dataModel: DataModel, ftom service: Service) throws
+    func getRelations(for service: Service) throws -> [ServiceDataModel]
 }
 
 class ServiceDataModelRepository: ServiceDataModelRepositoryProtocol {
@@ -30,6 +31,14 @@ class ServiceDataModelRepository: ServiceDataModelRepositoryProtocol {
         let relation = try getRelation(for: service, and: dataModel)
         store.context.delete(relation)
         store.save()
+    }
+    
+    func getRelations(for service: Service) throws -> [ServiceDataModel] {
+        guard let serviceId = service.id?.uuidString else { throw ServiceDataModelError.noId }
+        let request = ServiceDataModel.fetchRequest()
+        request.predicate = NSPredicate(format: "serviceId = %@", serviceId)
+        request.sortDescriptors = [NSSortDescriptor(keyPath: \ServiceDataModel.type, ascending: true)]
+        return try store.context.fetch(request)
     }
     
     private func getRelation(for service: Service, and dataModel: DataModel) throws -> ServiceDataModel {

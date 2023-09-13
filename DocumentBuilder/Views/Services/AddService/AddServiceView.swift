@@ -140,7 +140,7 @@ struct AddServiceView: View {
                         if viewModel.responseModel == nil && viewModel.responseModelListViewModel.selected == nil {
                             HStack(alignment: .bottom) {
                                 Button(action: {
-                                    viewModel.createRequestModel()
+                                    viewModel.createResponseModel()
                                 }) {
                                     Text("Добавьте")
                                 }

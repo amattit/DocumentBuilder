@@ -11,6 +11,8 @@ import Dependencies
 protocol DataModelRepositoryProtocol {
     func getDataModels(for module: Module) throws -> [DataModel]
     func delete(_ model: DataModel)
+    func getModel(by id: String) throws -> DataModel
+    func getAtributes(for model: DataModel) throws -> [DataModelAttributes]
 }
 
 class DataModelRepository: DataModelRepositoryProtocol {
@@ -30,6 +32,22 @@ class DataModelRepository: DataModelRepositoryProtocol {
         store.save()
     }
     
+    func getModel(by id: String) throws -> DataModel {
+        let request = DataModel.fetchRequest()
+        request.predicate = NSPredicate(format: "id = %@", id)
+        request.sortDescriptors = [NSSortDescriptor(keyPath: \DataModel.title, ascending: true)]
+        guard let model = try store.context.fetch(request).first else { throw Error.noData }
+        return model
+    }
+    
+    func getAtributes(for model: DataModel) throws -> [DataModelAttributes] {
+        guard let modelId = model.id?.uuidString else { throw Error.noId }
+        let request = DataModelAttributes.fetchRequest()
+        request.predicate = NSPredicate(format: "parentId = %@", modelId)
+        request.sortDescriptors = [NSSortDescriptor(keyPath: \DataModelAttributes.title, ascending: true)]
+        return try store.context.fetch(request)
+    }
+    
     func getPredicate(for module: Module) throws -> NSPredicate {
         guard let moduleId = module.id else { throw ServiceRepositoryError.noModuleId }
         
@@ -43,6 +61,11 @@ class DataModelRepository: DataModelRepositoryProtocol {
     
     func getSortDescriptor() -> [NSSortDescriptor] {
         [NSSortDescriptor(keyPath: \DataModel.title, ascending: true)]
+    }
+    
+    enum Error: Swift.Error {
+        case noData
+        case noId
     }
 }
 

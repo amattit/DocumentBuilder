@@ -64,6 +64,9 @@ struct ModuleItemListView: View {
         .navigationDestination(for: Feature.self, destination: { feature in
             FeatureView(viewModel: .init(feature: feature))
         })
+        .navigationDestination(for: Service.self, destination: { service in
+            ServiceView(viewModel: .init(service: service, module: viewModel.module))
+        })
         .sheet(item: $viewModel.present, content: { item in
             switch item {
             case .addModel:
