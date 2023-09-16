@@ -34,7 +34,7 @@ class ServiceDataModelRepository: ServiceDataModelRepositoryProtocol {
     }
     
     func getRelations(for service: Service) throws -> [ServiceDataModel] {
-        guard let serviceId = service.id?.uuidString else { throw ServiceDataModelError.noId }
+        guard let serviceId = service.id?.uuidString else { throw Error.noId }
         let request = ServiceDataModel.fetchRequest()
         request.predicate = NSPredicate(format: "serviceId = %@", serviceId)
         request.sortDescriptors = [NSSortDescriptor(keyPath: \ServiceDataModel.type, ascending: true)]
@@ -43,7 +43,7 @@ class ServiceDataModelRepository: ServiceDataModelRepositoryProtocol {
     
     private func getRelation(for service: Service, and dataModel: DataModel) throws -> ServiceDataModel {
         guard let serviceId = service.id, let dataModelId = dataModel.id else {
-            throw ServiceDataModelError.noId
+            throw Error.noId
         }
         let request = ServiceDataModel.fetchRequest()
         request.sortDescriptors = [NSSortDescriptor(keyPath: \ServiceDataModel.id, ascending: true)]
@@ -55,13 +55,8 @@ class ServiceDataModelRepository: ServiceDataModelRepositoryProtocol {
         request.predicate = predicate
         
         guard let model = try store.context.fetch(request).first
-        else { throw ServiceDataModelError.noRelation }
+        else { throw Error.noRelation }
         return model
-    }
-    
-    enum ServiceDataModelError: Error {
-        case noId
-        case noRelation
     }
     
     enum RelationType: String {

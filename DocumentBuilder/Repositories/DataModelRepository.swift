@@ -43,13 +43,16 @@ class DataModelRepository: DataModelRepositoryProtocol {
     func getAtributes(for model: DataModel) throws -> [DataModelAttributes] {
         guard let modelId = model.id?.uuidString else { throw Error.noId }
         let request = DataModelAttributes.fetchRequest()
-        request.predicate = NSPredicate(format: "parentId = %@", modelId)
-        request.sortDescriptors = [NSSortDescriptor(keyPath: \DataModelAttributes.title, ascending: true)]
+        request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+            NSPredicate(format: "parentId = %@", modelId),
+            NSPredicate(format: "deletedAt == nil"),
+        ])
+        request.sortDescriptors = [NSSortDescriptor(keyPath: \DataModelAttributes.createdAt, ascending: true)]
         return try store.context.fetch(request)
     }
     
     func getPredicate(for module: Module) throws -> NSPredicate {
-        guard let moduleId = module.id else { throw ServiceRepositoryError.noModuleId }
+        guard let moduleId = module.id else { throw Error.noModuleId }
         
         let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
             NSPredicate(format: "moduleId == %@", moduleId.uuidString),
@@ -61,11 +64,6 @@ class DataModelRepository: DataModelRepositoryProtocol {
     
     func getSortDescriptor() -> [NSSortDescriptor] {
         [NSSortDescriptor(keyPath: \DataModel.title, ascending: true)]
-    }
-    
-    enum Error: Swift.Error {
-        case noData
-        case noId
     }
 }
 

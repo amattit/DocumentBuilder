@@ -31,7 +31,7 @@ class FeatureRepository: FeatureRepositoryProtocol {
     }
     
     func getPredicate(for module: Module) throws -> NSPredicate {
-        guard let moduleId = module.id else { throw ServiceRepositoryError.noModuleId }
+        guard let moduleId = module.id else { throw Error.noModuleId }
         
         let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
             NSPredicate(format: "parentId == %@", moduleId.uuidString),

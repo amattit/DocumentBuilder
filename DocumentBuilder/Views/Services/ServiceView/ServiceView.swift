@@ -29,6 +29,10 @@ struct ServiceView: View {
                 DataModelView(viewModel: viewModel)
             }
         }
+        .onDisappear {
+            viewModel.save()
+        }
+        .navigationTitle(Text("Сервис: \(viewModel.service.title ?? "")"))
     }
 }
 
@@ -42,8 +46,8 @@ final class ServiceViewModel: ObservableObject {
     
     @Published var headerViewModel: HeaderViewModel?
     @Published var queryViewModel: QueryParametersViewModel?
-    @Published var requestModel: DataModelViewModel?
-    @Published var responseModel: DataModelViewModel?
+    @Published var requestModel: EditDataModelViewModel?
+    @Published var responseModel: EditDataModelViewModel?
     
     let service: Service
     let module: Module
@@ -83,7 +87,7 @@ final class ServiceViewModel: ObservableObject {
             if let id = relations.first(where: { $0.type == ServiceDataModelRepository.RelationType.request.rawValue })?.dataModelId {
                 let model = try modelRepository.getModel(by: id.uuidString)
                 let attributes = try modelRepository.getAtributes(for: model)
-                requestModel = .init(dataMode: model, attributes: attributes)
+                requestModel = try .init(dataMode: model, attributes: attributes)
             }
         } catch {
             print(error.localizedDescription)
@@ -95,7 +99,7 @@ final class ServiceViewModel: ObservableObject {
             if let id = relations.first(where: { $0.type == ServiceDataModelRepository.RelationType.response.rawValue })?.dataModelId {
                 let model = try modelRepository.getModel(by: id.uuidString)
                 let attributes = try modelRepository.getAtributes(for: model)
-                responseModel = .init(dataMode: model, attributes: attributes)
+                responseModel = try .init(dataMode: model, attributes: attributes)
             }
         } catch {
             print(error.localizedDescription)
@@ -110,4 +114,13 @@ final class ServiceViewModel: ObservableObject {
         }
     }
     
+    func save() {
+        if let requestModel {
+            requestModel.update()
+        }
+        
+        if let responseModel {
+            responseModel.update()
+        }
+    }
 }

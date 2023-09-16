@@ -14,3 +14,9 @@ extension String? {
         else { return self }
     }
 }
+
+extension String: Identifiable {
+    public var id: String {
+        self
+    }
+}

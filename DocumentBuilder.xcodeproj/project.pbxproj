@@ -48,6 +48,9 @@
 		7E7380C42AAF8CEC00A12429 /* ServiceDataModelRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7380C32AAF8CEC00A12429 /* ServiceDataModelRepository.swift */; };
 		7E7380C62AAF944B00A12429 /* DataModelListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7380C52AAF944B00A12429 /* DataModelListView.swift */; };
 		7E980BF02AB5ECA900155493 /* HTTPMethodView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E980BEF2AB5ECA900155493 /* HTTPMethodView.swift */; };
+		7E980BF42AB5F18100155493 /* DataModelViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E980BF32AB5F18100155493 /* DataModelViewModel.swift */; };
+		7E980BF72AB5F24400155493 /* AttributesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E980BF62AB5F24400155493 /* AttributesView.swift */; };
+		7E980BFA2AB5F95F00155493 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E980BF92AB5F95F00155493 /* Error.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -111,6 +114,9 @@
 		7E7380C32AAF8CEC00A12429 /* ServiceDataModelRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceDataModelRepository.swift; sourceTree = "<group>"; };
 		7E7380C52AAF944B00A12429 /* DataModelListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModelListView.swift; sourceTree = "<group>"; };
 		7E980BEF2AB5ECA900155493 /* HTTPMethodView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPMethodView.swift; sourceTree = "<group>"; };
+		7E980BF32AB5F18100155493 /* DataModelViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModelViewModel.swift; sourceTree = "<group>"; };
+		7E980BF62AB5F24400155493 /* AttributesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttributesView.swift; sourceTree = "<group>"; };
+		7E980BF92AB5F95F00155493 /* Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -163,6 +169,7 @@
 		7E130C432AA5059200C5E5F6 /* DocumentBuilder */ = {
 			isa = PBXGroup;
 			children = (
+				7E980BF82AB5F95500155493 /* Error */,
 				7E7380BA2AAE26D000A12429 /* Repositories */,
 				7E130C7E2AA66F7000C5E5F6 /* Views */,
 				7E130C7B2AA66C8E00C5E5F6 /* Extensions */,
@@ -330,10 +337,11 @@
 		7E130CA62AAC7B1900C5E5F6 /* DataModel */ = {
 			isa = PBXGroup;
 			children = (
+				7E980BF52AB5F21900155493 /* Attributes */,
+				7E980BF22AB5F12E00155493 /* ModelList */,
+				7E980BF12AB5F12200155493 /* ModelView */,
 				7E7380AA2AACFB1600A12429 /* Models */,
-				7E130CA72AAC7B2F00C5E5F6 /* DataModelView.swift */,
 				7E7380B52AADD06F00A12429 /* ModelRowView.swift */,
-				7E7380C52AAF944B00A12429 /* DataModelListView.swift */,
 			);
 			path = DataModel;
 			sourceTree = "<group>";
@@ -395,6 +403,39 @@
 				7E980BEF2AB5ECA900155493 /* HTTPMethodView.swift */,
 			);
 			path = HTTPMethodView;
+			sourceTree = "<group>";
+		};
+		7E980BF12AB5F12200155493 /* ModelView */ = {
+			isa = PBXGroup;
+			children = (
+				7E130CA72AAC7B2F00C5E5F6 /* DataModelView.swift */,
+				7E980BF32AB5F18100155493 /* DataModelViewModel.swift */,
+			);
+			path = ModelView;
+			sourceTree = "<group>";
+		};
+		7E980BF22AB5F12E00155493 /* ModelList */ = {
+			isa = PBXGroup;
+			children = (
+				7E7380C52AAF944B00A12429 /* DataModelListView.swift */,
+			);
+			path = ModelList;
+			sourceTree = "<group>";
+		};
+		7E980BF52AB5F21900155493 /* Attributes */ = {
+			isa = PBXGroup;
+			children = (
+				7E980BF62AB5F24400155493 /* AttributesView.swift */,
+			);
+			path = Attributes;
+			sourceTree = "<group>";
+		};
+		7E980BF82AB5F95500155493 /* Error */ = {
+			isa = PBXGroup;
+			children = (
+				7E980BF92AB5F95F00155493 /* Error.swift */,
+			);
+			path = Error;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -551,6 +592,7 @@
 				7E7380BC2AAE270400A12429 /* ServiceRepository.swift in Sources */,
 				7E130C8D2AA67F6F00C5E5F6 /* ModuleItemListViewModel.swift in Sources */,
 				7E130C942AA7673A00C5E5F6 /* AddFeatureViewModel.swift in Sources */,
+				7E980BFA2AB5F95F00155493 /* Error.swift in Sources */,
 				7E7380B42AADB9D700A12429 /* ServiceRowView.swift in Sources */,
 				7E7380B92AADF3A400A12429 /* QueryParametersView.swift in Sources */,
 				7E130C882AA6792300C5E5F6 /* AddModuleView.swift in Sources */,
@@ -559,6 +601,8 @@
 				7E130C992AA7AD2500C5E5F6 /* ModuleView.swift in Sources */,
 				7E130C9B2AA7AD3000C5E5F6 /* ModuleViewModel.swift in Sources */,
 				7E7380C42AAF8CEC00A12429 /* ServiceDataModelRepository.swift in Sources */,
+				7E980BF72AB5F24400155493 /* AttributesView.swift in Sources */,
+				7E980BF42AB5F18100155493 /* DataModelViewModel.swift in Sources */,
 				7E46756E2AAFBBEC00A1F031 /* ServiceView.swift in Sources */,
 				7E130C832AA674E000C5E5F6 /* String+Ext.swift in Sources */,
 				7E130CA12AAB5C3300C5E5F6 /* FeatureView.swift in Sources */,

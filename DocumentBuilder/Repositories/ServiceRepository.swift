@@ -35,7 +35,7 @@ class ServiceRepository: ServiceRepositoryProtocol {
     
     // MARK: Headers
     func getHeaders(for service: Service) throws -> [Header] {
-        guard let serviceId = service.id?.uuidString else { throw ServiceRepositoryError.noServiceId }
+        guard let serviceId = service.id?.uuidString else { throw Error.noServiceId }
         let request = Header.fetchRequest()
         request.predicate = NSPredicate(format: "parentId = %@", serviceId)
         request.sortDescriptors = [NSSortDescriptor(keyPath: \Header.title, ascending: true)]
@@ -44,7 +44,7 @@ class ServiceRepository: ServiceRepositoryProtocol {
     
     // MARK: Query
     func getQuery(for service: Service) throws -> [QueryAttributes] {
-        guard let serviceId = service.id?.uuidString else { throw ServiceRepositoryError.noServiceId }
+        guard let serviceId = service.id?.uuidString else { throw Error.noServiceId }
         let request = QueryAttributes.fetchRequest()
         request.predicate = NSPredicate(format: "parentId = %@", serviceId)
         request.sortDescriptors = [NSSortDescriptor(keyPath: \QueryAttributes.title, ascending: true)]
@@ -52,7 +52,7 @@ class ServiceRepository: ServiceRepositoryProtocol {
     }
     
     func getPredicate(for module: Module) throws -> NSPredicate {
-        guard let moduleId = module.id else { throw ServiceRepositoryError.noModuleId }
+        guard let moduleId = module.id else { throw Error.noModuleId }
         
         let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
             NSPredicate(format: "parentId == %@", moduleId.uuidString),
@@ -65,12 +65,6 @@ class ServiceRepository: ServiceRepositoryProtocol {
     func getSortDescriptor() -> [NSSortDescriptor] {
         [NSSortDescriptor(keyPath: \Service.title, ascending: true)]
     }
-}
-
-enum ServiceRepositoryError: Error {
-    case noModuleId
-    case cantCreatePredicate
-    case noServiceId
 }
 
 enum ServiceRepositoryKey: DependencyKey {
