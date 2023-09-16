@@ -14,18 +14,10 @@ struct HeaderView: View {
         HStack {
             Text("Заголовки")
                 .font(.title)
-            Button(action: {
-                viewModel.headers.append(.init(id: UUID(), title: "", value: "", subtitle: ""))
-            }) {
+            Button(action: viewModel.addHeader) {
                 Image(systemName: "plus")
             }
-            Button(action: {
-                viewModel.selectedHeader.forEach { id in
-                    viewModel.headers.removeAll {
-                        $0.id == id
-                    }
-                }
-            }) {
+            Button(action: viewModel.removeHeaders) {
                 Image(systemName: "minus")
             }
         }
@@ -53,28 +45,105 @@ struct HeaderView: View {
     }
 }
 
-final class HeaderViewModel: ObservableObject {
+class HeaderViewModel: ObservableObject {
     @Published var headers: [HeaderModel] = []
     
     @Published var selectedHeader = Set<HeaderModel.ID>()
     
-    init() {
+    let service: Service?
+    
+    init(service: Service? = nil) {
         headers = [.init(id: UUID(), title: "Content-Type", value: "application/json", subtitle: "")]
+        self.service = service
     }
     
-    init(headers: [Header]) {
-        self.headers = headers.compactMap { item -> HeaderModel? in
-            guard let id = item.id else { return nil }
-            return .init(id: id, title: item.title ?? "", value: item.value ?? "", subtitle: item.subtitle ?? "")
+    init(headers: [Header], service: Service? = nil) throws {
+        self.headers = try headers.compactMap(HeaderModel.init)
+        self.service = service
+    }
+    
+    func addHeader() {
+        headers.append(.init(id: UUID(), title: "", value: "", subtitle: ""))
+    }
+    
+    func removeHeaders() {
+        selectedHeader.forEach { id in
+            headers.removeAll {
+                $0.id == id
+            }
         }
     }
 }
 
-// TODO: Перенести в CoreData, добавить parentId = service.id
-struct HeaderModel: Identifiable {
-    var id: UUID
-    var title: String
-    var value: String
-    var subtitle: String
-    var parentId: UUID?
+import Dependencies
+
+final class EditHeaderViewModel: HeaderViewModel {
+    @Dependency(\.persistent) private var store
+    
+    private let hostHeaders: [HeaderModel]
+    private let hostEntity: [Header]
+    
+    private var inserted: [UUID] = []
+    private var deleted: [UUID] = []
+    
+    override init(headers: [Header], service: Service? = nil) throws {
+        self.hostHeaders = try headers.compactMap(HeaderModel.init)
+        self.hostEntity = headers
+        
+        try super.init(headers: headers, service: service)
+    }
+    
+    override func addHeader() {
+        let newHeader = HeaderModel(id: .init(), title: .init(), value: .init(), subtitle: .init(), parentId: service?.id)
+        self.headers.append(newHeader)
+        self.inserted.append(newHeader.id)
+    }
+    
+    override func removeHeaders() {
+        let removed = headers.filter { selectedHeader.contains($0.id) }.map(\.id)
+        deleted += removed
+        super.removeHeaders()
+    }
+    
+    func update() {
+        // Удаление заголовков
+        deleted.forEach { deletedId in
+            if let hostHeader = hostEntity.first(where: { $0.id == deletedId }) {
+                hostHeader.deletedAt = Date()
+            }
+        }
+        
+        // Изменение заголовков
+        headers.forEach { header in
+            if let hostHeader = hostHeaders.first(where: { $0.id == header.id }) {
+                if hostHeader != header {
+                    let entity = getEntity(for: header)
+                    entity?.title = header.title
+                    entity?.subtitle = header.subtitle
+                    entity?.value = header.value
+                    entity?.updatedAt = Date()
+                }
+            }
+        }
+        
+        inserted.forEach { insertedId in
+            if let insertedHeader = headers.first(where: { $0.id == insertedId }) {
+                let entity = Header(context: store.context)
+                entity.id = insertedHeader.id
+                entity.title = insertedHeader.title
+                entity.subtitle = insertedHeader.subtitle
+                entity.value = insertedHeader.value
+                entity.parentId = insertedHeader.parentId
+                entity.createdAt = Date()
+            }
+        }
+        
+        store.save()
+    }
+    
+    private func getEntity(for model: HeaderModel) -> Header? {
+        hostEntity.first { entity in
+            entity.id == model.id
+        }
+    }
 }

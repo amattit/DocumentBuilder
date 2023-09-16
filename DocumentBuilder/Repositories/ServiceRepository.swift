@@ -37,7 +37,10 @@ class ServiceRepository: ServiceRepositoryProtocol {
     func getHeaders(for service: Service) throws -> [Header] {
         guard let serviceId = service.id?.uuidString else { throw Error.noServiceId }
         let request = Header.fetchRequest()
-        request.predicate = NSPredicate(format: "parentId = %@", serviceId)
+        request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+            NSPredicate(format: "parentId == %@", serviceId),
+            NSPredicate(format: "deletedAt == nil"),
+        ])
         request.sortDescriptors = [NSSortDescriptor(keyPath: \Header.title, ascending: true)]
         return try store.context.fetch(request)
     }

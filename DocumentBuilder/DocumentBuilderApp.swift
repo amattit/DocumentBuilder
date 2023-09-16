@@ -9,12 +9,9 @@ import SwiftUI
 
 @main
 struct DocumentBuilderApp: App {
-    let persistenceController = PersistenceController.shared
-
     var body: some Scene {
         WindowGroup {
             ContentView(viewModel: .init())
-                .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
     }
 }

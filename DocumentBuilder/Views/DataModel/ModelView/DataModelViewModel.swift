@@ -46,16 +46,14 @@ class DataModelViewModel: ObservableObject {
 import Combine
 
 class EditDataModelViewModel: DataModelViewModel {
-    let hostModel: Model
-    let hostAttributes: [ModelAttribute]
+    private let hostModel: Model
+    private let hostAttributes: [ModelAttribute]
     
-    let hostModelEntity: DataModel
-    let hostAttributesEntity: [DataModelAttributes]
+    private let hostModelEntity: DataModel
+    private let hostAttributesEntity: [DataModelAttributes]
     
     private var deletedAttributes: [UUID] = []
     private var insertedAttributes: [UUID] = []
-    
-    private var disposables = Set<AnyCancellable>()
     
     override init(dataMode: DataModel, attributes: [DataModelAttributes]) throws {
         self.hostModel = try .init(with: dataMode)
