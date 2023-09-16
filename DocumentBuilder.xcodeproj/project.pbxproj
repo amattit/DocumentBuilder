@@ -47,6 +47,7 @@
 		7E7380C22AAE388100A12429 /* DataModelRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7380C12AAE388100A12429 /* DataModelRepository.swift */; };
 		7E7380C42AAF8CEC00A12429 /* ServiceDataModelRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7380C32AAF8CEC00A12429 /* ServiceDataModelRepository.swift */; };
 		7E7380C62AAF944B00A12429 /* DataModelListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7380C52AAF944B00A12429 /* DataModelListView.swift */; };
+		7E980BF02AB5ECA900155493 /* HTTPMethodView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E980BEF2AB5ECA900155493 /* HTTPMethodView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -109,6 +110,7 @@
 		7E7380C12AAE388100A12429 /* DataModelRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModelRepository.swift; sourceTree = "<group>"; };
 		7E7380C32AAF8CEC00A12429 /* ServiceDataModelRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceDataModelRepository.swift; sourceTree = "<group>"; };
 		7E7380C52AAF944B00A12429 /* DataModelListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModelListView.swift; sourceTree = "<group>"; };
+		7E980BEF2AB5ECA900155493 /* HTTPMethodView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPMethodView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -306,6 +308,7 @@
 		7E130CA22AABB80700C5E5F6 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				7E980BEE2AB5EC9100155493 /* HTTPMethodView */,
 				7E46756C2AAFBBDD00A1F031 /* ServiceView */,
 				7E7380B72AADF38A00A12429 /* Query */,
 				7E7380B22AADB9C400A12429 /* ServiceRow */,
@@ -384,6 +387,14 @@
 				7E7380C32AAF8CEC00A12429 /* ServiceDataModelRepository.swift */,
 			);
 			path = Repositories;
+			sourceTree = "<group>";
+		};
+		7E980BEE2AB5EC9100155493 /* HTTPMethodView */ = {
+			isa = PBXGroup;
+			children = (
+				7E980BEF2AB5ECA900155493 /* HTTPMethodView.swift */,
+			);
+			path = HTTPMethodView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -552,6 +563,7 @@
 				7E130C832AA674E000C5E5F6 /* String+Ext.swift in Sources */,
 				7E130CA12AAB5C3300C5E5F6 /* FeatureView.swift in Sources */,
 				7E130CA82AAC7B2F00C5E5F6 /* DataModelView.swift in Sources */,
+				7E980BF02AB5ECA900155493 /* HTTPMethodView.swift in Sources */,
 				7E130CA52AABB85500C5E5F6 /* AddServiceView.swift in Sources */,
 				7E130C852AA6785F00C5E5F6 /* MosuleListViewModel.swift in Sources */,
 				7E7380B12AADB32700A12429 /* HeaderView.swift in Sources */,
