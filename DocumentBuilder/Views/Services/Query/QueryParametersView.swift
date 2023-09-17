@@ -39,7 +39,7 @@ struct QueryParametersView: View {
             .width(ideal: 30, max: 30)
             
             TableColumn("Комментарий") { header in
-                TextField("Комментарий", text: header.comment)
+                TextField("Комментарий", text: header.comment, axis: .vertical)
             }
         }
         .frame(height: headerHeight())
@@ -61,22 +61,15 @@ class QueryParametersViewModel: ObservableObject {
     @Published var parameters: [ModelAttribute] = []
     @Published var selected = Set<ModelAttribute.ID>()
     
-    init() {
-        
+    let service: Service?
+    
+    init(service: Service? = nil) {
+        self.service = service
     }
     
-    init(query: [QueryAttributes]) {
-        parameters = query.compactMap { item -> ModelAttribute? in
-            guard let id = item.id, let parentId = item.parentId else { return nil }
-            return .init(
-                id: id,
-                title: item.title ?? "",
-                type: item.objectType ?? "",
-                isRequired: item.isRequired,
-                comment: item.comment ?? "",
-                parentId: parentId
-            )
-        }
+    init(query: [QueryAttributes], service: Service? = nil) throws {
+        self.service = service
+        parameters = try query.compactMap(ModelAttribute.init)
     }
     
     func add() {
@@ -88,6 +81,82 @@ class QueryParametersViewModel: ObservableObject {
             parameters.removeAll {
                 $0.id == item
             }
+        }
+    }
+}
+
+import Dependencies
+
+class EditQueryParametersViewModel: QueryParametersViewModel {
+    @Dependency(\.persistent) private var store
+    
+    private let hostQuery: [ModelAttribute]
+    private let hostEntity: [QueryAttributes]
+    
+    private var inserted: [UUID] = []
+    private var deleted: [UUID] = []
+    
+    override init(query: [QueryAttributes], service: Service? = nil) throws {
+        self.hostQuery = try query.compactMap(ModelAttribute.init)
+        self.hostEntity = query
+        
+        try super.init(query: query, service: service)
+    }
+    
+    override func add() {
+        let newQuery = ModelAttribute(id: .init(), title: .init(), type: .init(), isRequired: false, comment: .init(), parentId: service?.id)
+        self.parameters.append(newQuery)
+        self.inserted.append(newQuery.id)
+    }
+    
+    override func remove() {
+        let removed = parameters.filter { selected.contains($0.id) }.map(\.id)
+        deleted += removed
+        super.remove()
+    }
+    
+    func update() {
+        // Удаление query параметров
+        deleted.forEach { deletedId in
+            if let hostHeader = hostEntity.first(where: { $0.id == deletedId }) {
+                hostHeader.deletedAt = Date()
+            }
+        }
+        
+        // Изменение query параметров
+        parameters.forEach { parameter in
+            if let hostHeader = hostQuery.first(where: { $0.id == parameter.id }) {
+                if hostHeader != parameter {
+                    let entity = getEntity(for: parameter)
+                    entity?.title = parameter.title
+                    entity?.objectType = parameter.type
+                    entity?.isRequired = parameter.isRequired
+                    entity?.comment = parameter.comment
+                    entity?.updatedAt = Date()
+                }
+            }
+        }
+        
+        // Добавление query параметров
+        inserted.forEach { insertedId in
+            if let insertedQuery = parameters.first(where: { $0.id == insertedId }) {
+                let entity = QueryAttributes(context: store.context)
+                entity.id = insertedQuery.id
+                entity.parentId = insertedQuery.parentId
+                entity.title = insertedQuery.title
+                entity.comment = insertedQuery.comment
+                entity.isRequired = insertedQuery.isRequired
+                entity.objectType = insertedQuery.type
+                entity.createdAt = Date()
+            }
+        }
+        
+        store.save()
+    }
+    
+    private func getEntity(for model: ModelAttribute) -> QueryAttributes? {
+        hostEntity.first { entity in
+            entity.id == model.id
         }
     }
 }

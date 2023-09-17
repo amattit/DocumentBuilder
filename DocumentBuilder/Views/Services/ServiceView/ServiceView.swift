@@ -80,7 +80,7 @@ final class ServiceViewModel: ObservableObject {
     @Published var method: Method
     
     @Published var headerViewModel: EditHeaderViewModel?
-    @Published var queryViewModel: QueryParametersViewModel?
+    @Published var queryViewModel: EditQueryParametersViewModel?
     @Published var requestModel: EditDataModelViewModel?
     @Published var responseModel: EditDataModelViewModel?
     
@@ -119,7 +119,7 @@ final class ServiceViewModel: ObservableObject {
     func getQuery() {
         tryAction {
             let items = try serviceRepository.getQuery(for: service)
-            self.queryViewModel = .init(query: items)
+            self.queryViewModel = try .init(query: items)
             createQueryParametersBind()
         }
     }
@@ -161,6 +161,10 @@ final class ServiceViewModel: ObservableObject {
         
         if let headerViewModel {
             headerViewModel.update()
+        }
+        
+        if let queryViewModel {
+            queryViewModel.update()
         }
     }
     

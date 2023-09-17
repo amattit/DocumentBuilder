@@ -39,9 +39,15 @@ struct AttributesView: View {
             }
         }
         .popover(item: $popover) { info in
-            VStack {
-                Text(info)
+            VStack(alignment: .leading) {
+                HStack {
+                    Text(info)
+                        .textSelection(.enabled)
+                    Spacer()
+                }
             }
+            .padding(16)
+            .frame(width: 400, height: 300)
         }
         .frame(height: tableHeight())
         .scrollDisabled(true)
