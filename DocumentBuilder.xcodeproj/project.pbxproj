@@ -34,6 +34,7 @@
 		7E130CA12AAB5C3300C5E5F6 /* FeatureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E130CA02AAB5C3300C5E5F6 /* FeatureView.swift */; };
 		7E130CA52AABB85500C5E5F6 /* AddServiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E130CA42AABB85500C5E5F6 /* AddServiceView.swift */; };
 		7E130CA82AAC7B2F00C5E5F6 /* DataModelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E130CA72AAC7B2F00C5E5F6 /* DataModelView.swift */; };
+		7E3BDCB62AB703D6001C6DE4 /* TasksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3BDCB52AB703D6001C6DE4 /* TasksView.swift */; };
 		7E46756E2AAFBBEC00A1F031 /* ServiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E46756D2AAFBBEC00A1F031 /* ServiceView.swift */; };
 		7E7380AC2AACFB3200A12429 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7380AB2AACFB3200A12429 /* Model.swift */; };
 		7E7380AE2AADB02F00A12429 /* AddServiceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E7380AD2AADB02F00A12429 /* AddServiceViewModel.swift */; };
@@ -102,6 +103,7 @@
 		7E130CA02AAB5C3300C5E5F6 /* FeatureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureView.swift; sourceTree = "<group>"; };
 		7E130CA42AABB85500C5E5F6 /* AddServiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddServiceView.swift; sourceTree = "<group>"; };
 		7E130CA72AAC7B2F00C5E5F6 /* DataModelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataModelView.swift; sourceTree = "<group>"; };
+		7E3BDCB52AB703D6001C6DE4 /* TasksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksView.swift; sourceTree = "<group>"; };
 		7E46756D2AAFBBEC00A1F031 /* ServiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceView.swift; sourceTree = "<group>"; };
 		7E7380AB2AACFB3200A12429 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		7E7380AD2AADB02F00A12429 /* AddServiceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddServiceViewModel.swift; sourceTree = "<group>"; };
@@ -218,6 +220,7 @@
 		7E130C752AA5063200C5E5F6 /* App */ = {
 			isa = PBXGroup;
 			children = (
+				7E3BDCB42AB703BE001C6DE4 /* Tasks */,
 				7E130C762AA5074F00C5E5F6 /* AppView.swift */,
 			);
 			path = App;
@@ -349,6 +352,14 @@
 				7E7380B52AADD06F00A12429 /* ModelRowView.swift */,
 			);
 			path = DataModel;
+			sourceTree = "<group>";
+		};
+		7E3BDCB42AB703BE001C6DE4 /* Tasks */ = {
+			isa = PBXGroup;
+			children = (
+				7E3BDCB52AB703D6001C6DE4 /* TasksView.swift */,
+			);
+			path = Tasks;
 			sourceTree = "<group>";
 		};
 		7E46756C2AAFBBDD00A1F031 /* ServiceView */ = {
@@ -583,6 +594,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7E7380AC2AACFB3200A12429 /* Model.swift in Sources */,
+				7E3BDCB62AB703D6001C6DE4 /* TasksView.swift in Sources */,
 				7E130C962AA772CA00C5E5F6 /* Dictionary+Ext.swift in Sources */,
 				7E130C4E2AA5059800C5E5F6 /* Persistence.swift in Sources */,
 				7E130C8B2AA67F5600C5E5F6 /* ModuleItemListView.swift in Sources */,

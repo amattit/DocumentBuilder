@@ -13,5 +13,11 @@ struct DocumentBuilderApp: App {
         WindowGroup {
             ContentView(viewModel: .init())
         }
+        
+        Window("Tasks View", id: "taskView") {
+            TasksView(viewModel: .init())
+        }
+        .defaultPosition(.topTrailing)
+        .keyboardShortcut("t", modifiers: [.command, .shift])
     }
 }
