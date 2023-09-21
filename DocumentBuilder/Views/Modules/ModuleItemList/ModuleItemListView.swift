@@ -125,9 +125,9 @@ struct ModelItemsSection<Data, Content, AddContent>: View where Data: RandomAcce
     }
 }
 
-struct ModuleItemListView_Previews: PreviewProvider {
-    static var previews: some View {
-        ModuleItemListView(viewModel: .init(module: .preview))
-    }
-}
+//struct ModuleItemListView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ModuleItemListView(viewModel: .init(module: .preview))
+//    }
+//}
 
