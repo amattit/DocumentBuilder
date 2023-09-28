@@ -8,42 +8,23 @@
 import SwiftUI
 
 struct ScreenChapterView: View {
-    @State var screens: [String] = (0...5).map { "Screen \($0)"}
-    @ObservedObject var viewModel: ScreenChapterViewModel
+    @ObservedObject var viewModel: ScreenChapterListViewModel
     
     var body: some View {
         NavigationSplitView {
-            List {
-                ForEach(screens) {
-                    Text($0)
-                }
-            }
-            .toolbar {
-                ToolbarItem {
-                    Button(action: {
-                        print("add screen")
-                    }) {
-                        Image(systemName: "plus")
+            ScreenChapterListView(viewModel: viewModel)
+                .navigationDestination(for: ScreenChapterModel.self, destination: { item in
+                    NavigationSplitView {
+                        ScreenListView(viewModel: .init(chapter: item))
+                            .navigationDestination(for: ScreenModel.self) { item in
+                                ScreenView(viewModel: .init(item: item))
+                            }
+                    } detail: {
+                        Text("Выберите экран")
                     }
-                }
-            }
+                })
         } detail: {
-            NavigationSplitView {
-                List {
-                    ForEach(viewModel.states) { state in
-                        Button(state.state) {
-                            viewModel.selected = state
-                        }
-                    }
-                    Button("Добавить экран") {
-                        print("add state")
-                    }
-                }
-            } detail: {
-                if let selected = viewModel.selected {
-                    ScreenView(viewModel: .init(state: selected))
-                }
-            }
+            Text("Выберите модуль")
         }
         .frame(minWidth: 600, minHeight: 600)
     }
@@ -95,9 +76,4 @@ extension ScreenStateModel {
     static var mock: [ScreenStateModel] = [
         .init(id: .init(), parentId: .init(), state: "full", layoutLink: "")
     ]
-}
-
-final class ScreenChapterViewModel: ObservableObject {
-    @Published var states = ScreenStateModel.mock
-    @Published var selected: ScreenStateModel?
 }

@@ -11,6 +11,7 @@ import SwiftUI
 struct ScreenChapterModel: Identifiable, Hashable {
     let id: UUID
     var title: String
+    var managedObject: ScreenChapter?
 }
 
 struct ScreenModel: Identifiable, Hashable {
@@ -20,7 +21,15 @@ struct ScreenModel: Identifiable, Hashable {
     var type: ScreenType; enum ScreenType: String {
         case screen
         case widget
+        
+        static func random() -> Self {
+            if let element = [ScreenType.screen, .widget].randomElement() {
+                return element
+            }
+            return .widget
+        }
     }
+    var managedObject: Screen?
 }
 
 struct ScreenStateModel: Identifiable, Hashable {
@@ -47,6 +56,8 @@ struct ScreenActionModel: Identifiable, Hashable {
     parentId: UUID? - ссылка на раздел
     title: String
     type: String - widget, screen, control?
+ 
+ // Связь экран/экран 
     
  // Состояния экрана
     id: UUID
