@@ -18,9 +18,22 @@ struct ScreenModel: Identifiable, Hashable {
     let id: UUID
     let parentId: UUID?
     var title: String
-    var type: ScreenType; enum ScreenType: String {
+    var type: ScreenType; enum ScreenType: String, Identifiable {
         case screen
         case widget
+        
+        var id: String {
+            self.rawValue
+        }
+        
+        var title: String {
+            switch self {
+            case .screen:
+                return "Экран"
+            case .widget:
+                return "Виджет"
+            }
+        }
         
         static func random() -> Self {
             if let element = [ScreenType.screen, .widget].randomElement() {
@@ -38,6 +51,14 @@ struct ScreenStateModel: Identifiable, Hashable {
     var state: String
     var layoutLink: String
     var image: Data?
+    
+    static var recommendedStates: [String] {
+        [
+            "Нет данных",
+            "Обычный",
+            "Переполненный"
+        ]
+    }
 }
 
 struct ScreenActionModel: Identifiable, Hashable {

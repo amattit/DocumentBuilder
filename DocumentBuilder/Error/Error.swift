@@ -12,5 +12,8 @@ enum Error: Swift.Error {
     case cantCreatePredicate
     case noServiceId
     case noData
+    
+    // url
+    case badUrl
 }
 

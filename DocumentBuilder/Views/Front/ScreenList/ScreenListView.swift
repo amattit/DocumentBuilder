@@ -14,9 +14,14 @@ struct ScreenListView: View {
     
     var body: some View {
         List {
-            ForEach(viewModel.items) { item in
-                NavigationLink(value: item) {
-                    Text(item.title)
+            ForEach(viewModel.sections) { item in
+                Section(item.title) {
+                    ForEach(viewModel.items(for: item)) { item in
+                        NavigationLink(value: item) {
+                            Text(item.title)
+                        }
+
+                    }
                 }
             }
         }
@@ -81,6 +86,10 @@ final class ScreenListViewModel: ObservableObject {
     @Published var selected: ScreenModel?
     @Published var present: Present?
     
+    var sections: [ScreenModel.ScreenType] {
+        Array(Set(items.map(\.type)))
+    }
+    
     let chapter: ScreenChapterModel
     private var disposables = Set<AnyCancellable>()
     
@@ -98,6 +107,12 @@ final class ScreenListViewModel: ObservableObject {
             }
         } catch {
             print(error.localizedDescription)
+        }
+    }
+    
+    func items(for section: ScreenModel.ScreenType) -> [ScreenModel] {
+        items.filter {
+            $0.type == section
         }
     }
     
