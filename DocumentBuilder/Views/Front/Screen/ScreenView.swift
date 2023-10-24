@@ -12,25 +12,58 @@ struct ScreenView: View {
     @ObservedObject var viewModel: ScreenViewModel
 
     var body: some View {
-        ScrollView {
-            HStack {
-                ForEach(viewModel.states) { state in
-                    Button(state.state) {
-                        viewModel.select(state)
-                    }
-                }
-                Button("Добавить") {
-                    viewModel.present = .add
-                }
+        HSplitView {
+            // Основной контент
+            ScrollView {
+                SelectedState
+                TitleView
             }
-            TitleView
-            TypeView
-            SelectedState
+            // Вспомогательный контент
+            VStack(alignment: .leading) {
+                TypeView
+                Text("Действия")
+                Button(action: viewModel.showAddState) {
+                    Text("Добавить состояние")
+                }
+                .buttonStyle(.link)
+                
+                Button(action: {}) {
+                    Text("Добавить модель экрана")
+                }
+                .buttonStyle(.link)
+                
+                Button(action: viewModel.showAddScreen) {
+                    Text("Добавить экран")
+                }
+                .buttonStyle(.link)
+                
+                Button(action: viewModel.showAddWidget) {
+                    Text("Добавить виджет")
+                }
+                .buttonStyle(.link)
+                Spacer()
+            }
+            .padding()
         }
         .sheet(item: $viewModel.present) { item in
             switch item {
-            case .add:
+            case .addState:
                 AddScreenStateView(viewModel: AddScreenStateViewModel(screenModel: viewModel.item))
+                    .frame(minWidth: 500, minHeight: 500)
+            case .addScreen:
+                CreateScreenChapterView(viewModel: CreateScreenViewModel(
+                    chaper: viewModel.chapter,
+                    type: .screen,
+                    onSave: { viewModel.present = nil }
+                )
+)
+            case .addWidget:
+                CreateScreenChapterView(viewModel: CreateScreenViewModel(
+                    chaper: viewModel.chapter,
+                    type: .widget,
+                    onSave: { viewModel.present = nil }
+                )
+)
             }
         }
     }
@@ -43,15 +76,21 @@ struct ScreenView: View {
     
     var TypeView: some View {
         HStack {
+            Text("Тип экрана:")
             Text(viewModel.item.type.rawValue)
-            Spacer()
         }
     }
     
     @ViewBuilder
     var SelectedState: some View {
-        ScreenStateView(viewModel: .init(state: viewModel.selectedState))
-            .id(viewModel.selectedState?.state.id ?? UUID().uuidString)
+        TabView {
+            ForEach(viewModel.states) { item in
+                ScreenStateView(viewModel: .init(state: item))
+                    .tabItem {
+                        Text(item.state)
+                    }
+            }
+        }
     }
 }
 
@@ -64,9 +103,11 @@ final class ScreenViewModel: ObservableObject {
     @Published var states: [ScreenStateModel] = []
     @Published var selectedState: ScreenStateModel?
     @Published var present: Present?
+    let chapter: ScreenChapterModel
     
-    init(item: ScreenModel) {
+    init(item: ScreenModel, chapter: ScreenChapterModel) {
         self.item = item
+        self.chapter = chapter
         load()
     }
     
@@ -91,11 +132,25 @@ final class ScreenViewModel: ObservableObject {
     func select(_ state: ScreenStateModel) {
         self.selectedState = state
     }
+    
+    func showAddState() {
+        present = .addState
+    }
+    
+    func showAddScreen() {
+        present = .addScreen
+    }
+    
+    func showAddWidget() {
+        present = .addWidget
+    }
 }
 
 extension ScreenViewModel {
     enum Present: Identifiable, Hashable {
-        case add
+        case addState
+        case addScreen
+        case addWidget
         
         var id: Int {
             self.hashValue

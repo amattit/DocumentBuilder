@@ -78,6 +78,15 @@ final class ScreenChapterListViewModel: ObservableObject {
         }
     }
     
+    func getChapter(for screenModel: ScreenModel) -> ScreenChapterModel {
+        if let model = items.first(where: {
+            $0.id == screenModel.parentId
+        }) {
+            return model
+        }
+        fatalError("Не найдена модель")
+    }
+    
     private func bind() {
         NotificationCenter.default.publisher(for: NSManagedObjectContext.didSaveObjectsNotification)
             .sink { notification in

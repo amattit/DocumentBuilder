@@ -13,18 +13,17 @@ struct ScreenChapterView: View {
     var body: some View {
         NavigationSplitView {
             ScreenChapterListView(viewModel: viewModel)
-                .navigationDestination(for: ScreenChapterModel.self, destination: { item in
-                    NavigationSplitView {
-                        ScreenListView(viewModel: .init(chapter: item))
-                            .navigationDestination(for: ScreenModel.self) { item in
-                                ScreenView(viewModel: .init(item: item))
-                            }
-                    } detail: {
-                        Text("Выберите экран")
-                    }
-                })
-        } detail: {
+                .navigationDestination(for: ScreenChapterModel.self) { item in
+                    ScreenListView(viewModel: .init(chapter: item))
+                }
+                
+        } content: {
             Text("Выберите модуль")
+                .navigationDestination(for: ScreenModel.self) { item in
+                    ScreenView(viewModel: .init(item: item, chapter: viewModel.getChapter(for: item)))
+                }
+        } detail: {
+            Text("Выберите экран")
         }
         .frame(minWidth: 600, minHeight: 600)
     }

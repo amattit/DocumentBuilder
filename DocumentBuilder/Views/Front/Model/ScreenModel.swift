@@ -35,6 +35,19 @@ struct ScreenModel: Identifiable, Hashable {
             }
         }
         
+        static func priorityDescriptor(lhs: ScreenType, rhs: ScreenType) -> Bool {
+            lhs.priority < rhs.priority
+        }
+        
+        var priority: Int {
+            switch self {
+            case .screen:
+                return 0
+            case .widget:
+                return 1
+            }
+        }
+        
         static func random() -> Self {
             if let element = [ScreenType.screen, .widget].randomElement() {
                 return element

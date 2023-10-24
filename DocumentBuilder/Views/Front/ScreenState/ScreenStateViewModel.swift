@@ -11,13 +11,12 @@ import Dependencies
 final class ScreenStateViewModel: ObservableObject {
     @Dependency(\.figma) var figma
     
-    @Published var state: ScreenStateModel?
+    @Published var state: ScreenStateModel
     @Published var isLoading = false
-    @Published var url: URL?
     @Published var data: Data?
     
     private let logger = Logger(module: "ScreenStateViewModel")
-    init(state: ScreenStateModel?) {
+    init(state: ScreenStateModel) {
         self.state = state
         URLCache.shared.memoryCapacity = 50_000_000 // ~50 MB memory space
         URLCache.shared.diskCapacity = 500_000_000 // ~1GB disk cache space
@@ -44,7 +43,7 @@ final class ScreenStateViewModel: ObservableObject {
     
     @MainActor
     private func getImageUrl() async throws -> URL {
-        let figmaResponse = try await figma.getImageUrl(from: self.state?.layoutLink ?? "")
+        let figmaResponse = try await figma.getImageUrl(from: self.state.layoutLink)
         guard let imageRef = figmaResponse.images.first?.value, let url = URL(string: imageRef) else { throw Error.badUrl }
         return url
     }

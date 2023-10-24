@@ -12,12 +12,10 @@ struct ScreenStateView: View {
     
     var body: some View {
         
-        VStack(alignment: .leading) {
-            Text(viewModel.state?.layoutLink ?? "")
-//            Button("сделать снимок из фигмы") {
-//                viewModel.load()
-//            }
-//            
+        VStack() {
+            image
+            Link("Открыть в figma", destination: URL(string: viewModel.state.layoutLink) ?? URL(string: "https://figma.com")!)
+                .font(.footnote)
 //            PasteButton(supportedContentTypes: [.image]) { providers in
 //                for provider in providers {
 //                    provider.loadObject(ofClass: NSImage.self) { object, error in
@@ -30,7 +28,6 @@ struct ScreenStateView: View {
 //                }
 //            }
             
-            image
         }
         .onAppear {
             Task {

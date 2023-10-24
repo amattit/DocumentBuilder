@@ -88,6 +88,7 @@ final class ScreenListViewModel: ObservableObject {
     
     var sections: [ScreenModel.ScreenType] {
         Array(Set(items.map(\.type)))
+            .sorted(by: ScreenModel.ScreenType.priorityDescriptor)
     }
     
     let chapter: ScreenChapterModel
