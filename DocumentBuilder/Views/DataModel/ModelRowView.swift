@@ -21,16 +21,16 @@ struct ModelRowView: View {
     }
 }
 
-struct ModelRowView_Previews: PreviewProvider {
-    static var model: DataModel {
-        let persistent = Persistent(inMemory: true)
-        let model = DataModel(context: persistent.context)
-        model.title = "Создание заметки"
-        model.modelType = "network"
-        persistent.save()
-        return model
-    }
-    static var previews: some View {
-        ModelRowView(model: model)
-    }
-}
+//struct ModelRowView_Previews: PreviewProvider {
+//    static var model: DataModel {
+//        let persistent = Persistent(inMemory: true)
+//        let model = DataModel(context: persistent.context)
+//        model.title = "Создание заметки"
+//        model.modelType = "network"
+//        persistent.save()
+//        return model
+//    }
+//    static var previews: some View {
+//        ModelRowView(model: model)
+//    }
+//}

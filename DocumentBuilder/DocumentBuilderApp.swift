@@ -19,5 +19,11 @@ struct DocumentBuilderApp: App {
         }
         .defaultPosition(.topTrailing)
         .keyboardShortcut("t", modifiers: [.command, .shift])
+        
+        Window("Screen View", id: "screenView") {
+            ScreenChapterView(viewModel: .init())
+        }
+        .defaultPosition(.center)
+        .keyboardShortcut("s", modifiers: [.command, .shift])
     }
 }

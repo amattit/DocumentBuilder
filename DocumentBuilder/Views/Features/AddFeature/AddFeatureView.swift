@@ -61,8 +61,8 @@ struct AddFeatureView: View {
     }
 }
 
-struct AddFeatureView_Previews: PreviewProvider {
-    static var previews: some View {
-        AddFeatureView(viewModel: .init(moduleId: UUID(), onSave: {}))
-    }
-}
+//struct AddFeatureView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        AddFeatureView(viewModel: .init(moduleId: UUID(), onSave: {}))
+//    }
+//}

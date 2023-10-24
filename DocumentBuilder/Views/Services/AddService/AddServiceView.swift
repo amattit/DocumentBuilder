@@ -212,12 +212,12 @@ struct AddServiceView: View {
     }
 }
 
-struct AddServiceView_Previews: PreviewProvider {
-    static var previews: some View {
-        AddServiceView(viewModel: .init(module: .preview))
-            .frame(width: 700, height: 800)
-    }
-}
+//struct AddServiceView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        AddServiceView(viewModel: .init(module: .preview))
+//            .frame(width: 700, height: 800)
+//    }
+//}
 
 
 enum Method: String, CaseIterable, Hashable {

@@ -67,22 +67,22 @@ struct MethodView: View {
     }
 }
 
-struct ServiceRowView_Preview: PreviewProvider {
-    static var service: Service {
-        let persistent = Persistent(inMemory: true)
-        let service = Service(context: persistent.context)
-        service.id = UUID()
-        service.method = "GET"
-        service.title = "Запрос на получение объекта"
-        service.path = "/api/v1/note/:id"
-        
-        return service
-    }
-    static var previews: some View {
-        
-        ServiceRowView(service: service)
-    }
-}
+//struct ServiceRowView_Preview: PreviewProvider {
+//    static var service: Service {
+//        let persistent = Persistent(inMemory: true)
+//        let service = Service(context: persistent.context)
+//        service.id = UUID()
+//        service.method = "GET"
+//        service.title = "Запрос на получение объекта"
+//        service.path = "/api/v1/note/:id"
+//        
+//        return service
+//    }
+//    static var previews: some View {
+//        
+//        ServiceRowView(service: service)
+//    }
+//}
 
 
 class ServiceRowViewModel: ObservableObject {

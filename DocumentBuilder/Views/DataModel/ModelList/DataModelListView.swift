@@ -29,11 +29,11 @@ struct DataModelListView: View {
     }
 }
 
-struct DataModelListView_Previews: PreviewProvider {
-    static var previews: some View {
-        DataModelListView(viewModel: .init(module: .preview))
-    }
-}
+//struct DataModelListView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        DataModelListView(viewModel: .init(module: .preview))
+//    }
+//}
 
 import Combine
 
