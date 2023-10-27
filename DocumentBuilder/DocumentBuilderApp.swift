@@ -11,19 +11,19 @@ import SwiftUI
 struct DocumentBuilderApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView(viewModel: .init())
+            ContentView()
         }
         
-        Window("Tasks View", id: "taskView") {
-            TasksView(viewModel: .init())
-        }
-        .defaultPosition(.topTrailing)
-        .keyboardShortcut("t", modifiers: [.command, .shift])
-        
-        Window("Screen View", id: "screenView") {
-            ScreenChapterView(viewModel: .init())
-        }
-        .defaultPosition(.center)
-        .keyboardShortcut("s", modifiers: [.command, .shift])
+//        Window("Tasks View", id: "taskView") {
+//            TasksView(viewModel: .init())
+//        }
+//        .defaultPosition(.topTrailing)
+//        .keyboardShortcut("t", modifiers: [.command, .shift])
+//        
+//        Window("Screen View", id: "screenView") {
+//            ScreenChapterView(viewModel: .init())
+//        }
+//        .defaultPosition(.center)
+//        .keyboardShortcut("s", modifiers: [.command, .shift])
     }
 }

@@ -6,23 +6,13 @@
 //
 
 import SwiftUI
-import CoreData
-import Dependencies
+import Back
 
 struct ContentView: View {
-    @ObservedObject var viewModel: ModuleListViewModel
+//    @ObservedObject var viewModel: ModuleListViewModel
     
     var body: some View {
-        NavigationSplitView(columnVisibility: $viewModel.visibility, sidebar: {
-            ModuleListView(viewModel: viewModel)
-        }, detail: {
-            NavigationStack {
-                if let selected = viewModel.selected {
-                    ModuleItemListView(viewModel: .init(module: selected))
-                }
-            }
-        })
-        .navigationTitle(viewModel.selected == nil ? Text("Документ билдер") : Text(viewModel.selected?.title ?? ""))
+        Back.ContentView()
     }
 }
 
